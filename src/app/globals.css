@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #1B2A4A;
+  --primary-light: #243558;
+  --primary-dark: #111D35;
+  --accent: #D4A843;
+  --accent-light: #E4BE6A;
+  --accent-dark: #B8912E;
+  --bg-dark: #0D1117;
+  --bg-section: #111827;
+  --text-primary: #FFFFFF;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
+  --color-bg-dark: var(--bg-dark);
+  --color-bg-section: var(--bg-section);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-montserrat: var(--font-montserrat-var);
+  --font-inter: var(--font-inter-var);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+[id] {
+  scroll-margin-top: 96px;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-inter-var), system-ui, sans-serif;
+  background-image:
+    radial-gradient(circle at top, rgba(212, 168, 67, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(17, 29, 53, 0.3) 0%, rgba(13, 17, 23, 0) 22%);
+  background-attachment: scroll;
+}
+
+@media (hover: hover) {
+  body {
+    background-attachment: fixed;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat-var), system-ui, sans-serif;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light) var(--bg-dark);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: var(--primary-dark);
+}
+
+/* Swiper gallery overrides */
+.portfolio-swiper {
+  --swiper-navigation-color: #D4A843;
+  --swiper-navigation-size: 28px;
+}
+
+.portfolio-swiper .swiper-button-next,
+.portfolio-swiper .swiper-button-prev {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.portfolio-swiper .swiper-button-next:hover,
+.portfolio-swiper .swiper-button-prev:hover {
+  background: rgba(212, 168, 67, 0.3);
+}
+
+.portfolio-swiper .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hide scrollbar for thumbnail strip */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide swiper arrows on mobile */
+@media (max-width: 640px) {
+  .portfolio-swiper .swiper-button-next,
+  .portfolio-swiper .swiper-button-prev {
+    display: none;
+  }
+}
+
+/* Scroll margin responsive */
+@media (max-width: 768px) {
+  [id] {
+    scroll-margin-top: 64px;
+  }
+}
+
+/* Hide default cursor for custom dot */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
