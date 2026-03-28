@@ -101,27 +101,27 @@ export default function Hero() {
             variants={fadeUp}
             className="mb-6 text-white/80 text-base sm:text-lg lg:text-xl font-light tracking-wide"
           >
-            <p className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-0">
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Монолитные работы</span>
-              <span className="text-accent/50 mx-2 hidden sm:inline">·</span>
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Кровельные работы</span>
-              <span className="text-accent/50 mx-2 hidden sm:inline">·</span>
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Фасадные работы</span>
-              <span className="text-accent/50 mx-2 hidden sm:inline">·</span>
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Кладочные работы</span>
-              <span className="text-accent/50 mx-2 hidden sm:inline">·</span>
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Отделочные работы</span>
-              <span className="text-accent/50 mx-2 hidden sm:inline">·</span>
-              <span className="hover:text-accent transition-colors duration-300 cursor-default">Электромонтаж</span>
-            </p>
+            <div className="flex flex-col gap-1 sm:gap-2">
+              <div className="flex justify-between">
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Монолитные работы</span>
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Кровельные работы</span>
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Фасадные работы</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Кладочные работы</span>
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Отделочные работы</span>
+                <span className="hover:text-accent transition-colors duration-300 cursor-default">Электромонтаж</span>
+              </div>
+            </div>
           </motion.div>
 
           {/* Geography */}
           <motion.p
             variants={fadeUp}
-            className="mb-12 text-sm sm:text-base text-white/50 tracking-wide font-light"
+            className="mb-12 text-sm sm:text-base text-white/50 tracking-wide font-light flex justify-between"
           >
-            От частных домов до промышленных объектов <span className="text-accent/50 mx-1.5">·</span> Пермь и вся Россия
+            <span>От частных домов до промышленных объектов</span>
+            <span>Пермь и вся Россия</span>
           </motion.p>
 
           {/* Stats row */}
@@ -153,7 +153,7 @@ export default function Hero() {
           >
             <button
               onClick={() => handleScroll("#portfolio")}
-              className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-3 overflow-hidden rounded-sm bg-accent px-10 py-4.5 text-base font-semibold uppercase tracking-wider text-primary-dark transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
+              className="group relative inline-flex w-full sm:flex-1 items-center justify-center gap-3 overflow-hidden rounded-sm bg-accent px-10 py-4.5 text-base font-semibold uppercase tracking-wider text-primary-dark transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
             >
               <span className="relative z-10">Смотреть объекты</span>
               <svg
@@ -169,7 +169,7 @@ export default function Hero() {
             </button>
             <button
               onClick={() => handleScroll("#contacts")}
-              className="inline-flex w-full sm:w-auto items-center justify-center rounded-sm border border-white/15 px-10 py-4.5 text-base font-normal uppercase tracking-wider text-white transition-all duration-300 hover:border-accent/50 hover:text-accent"
+              className="inline-flex w-full sm:flex-1 items-center justify-center rounded-sm border border-white/15 px-10 py-4.5 text-base font-normal uppercase tracking-wider text-white transition-all duration-300 hover:border-accent/50 hover:text-accent"
             >
               Обсудить проект
             </button>

@@ -132,8 +132,9 @@ export default function Portfolio() {
   const tickerItems = [
     "Все работы",
     "Монолитные работы",
-    "Кровельные работы",
     "Фасадные работы",
+    "Кровельные работы",
+    "Кладочные работы",
   ];
 
   const filteredProjects = activeFilter === "Все работы"
@@ -142,6 +143,7 @@ export default function Portfolio() {
         if (activeFilter === "Монолитные работы") return p.type.startsWith("Монолит");
         if (activeFilter === "Кровельные работы") return p.type === "Кровля";
         if (activeFilter === "Фасадные работы") return p.type === "Фасад";
+        if (activeFilter === "Кладочные работы") return p.type === "Кладка";
         return false;
       });
 
@@ -177,7 +179,7 @@ export default function Portfolio() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
       <div ref={ref}>
-        {/* Header — centered in container */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -191,7 +193,7 @@ export default function Portfolio() {
             Как мы строим
           </h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Реальные кадры с объектов — от подготовки основания до монтажа конструкций
+            Фотографии с объектов — не для красоты. Это фиксация технологии: как укладываем, как льём, как собираем.
           </p>
         </motion.div>
 
