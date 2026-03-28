@@ -170,10 +170,16 @@ export const projects: Project[] = [
   },
 ];
 
+const CDN = "https://pub-bb1561168dcd45c991b3b95d38e591d4.r2.dev";
+
 // Helper to generate photo paths for a project
 export function getProjectPhotos(slug: string, count: number): string[] {
   return Array.from({ length: count }, (_, i) => {
     const padded = String(i + 1).padStart(3, "0");
-    return `/images/projects/${slug}/${padded}.jpg`;
+    return `${CDN}/projects/${slug}/${padded}.jpg`;
   });
+}
+
+export function getCoverUrl(slug: string): string {
+  return `${CDN}/covers/${slug}.jpg`;
 }

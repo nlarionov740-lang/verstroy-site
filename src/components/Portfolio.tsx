@@ -10,7 +10,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
 import Image from "next/image";
-import { projects, getProjectPhotos, type Project } from "@/data/projects";
+import { projects, getProjectPhotos, getCoverUrl, type Project } from "@/data/projects";
 
 /* ── Interactive ticker with drag + auto-scroll ── */
 function TickerMarquee({
@@ -222,7 +222,7 @@ export default function Portfolio() {
                 >
                   {/* Cover photo */}
                   <Image
-                    src={`/images/covers/${project.slug}.jpg`}
+                    src={getCoverUrl(project.slug)}
                     alt={project.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
