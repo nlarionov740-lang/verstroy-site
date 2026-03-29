@@ -23,7 +23,7 @@ export default function BrandLogo({
         width={iconSize}
         height={iconSize}
         sizes={`${iconSize}px`}
-        className="shrink-0"
+        className={`shrink-0 ${showTagline ? "mb-0.5" : ""}`}
         preload={true}
       />
 
