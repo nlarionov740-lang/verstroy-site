@@ -16,14 +16,14 @@ export default function BrandLogo({
     : "text-2xl tracking-[0.32em]";
 
   return (
-    <span className={`inline-flex items-end ${wrapperClass}`}>
+    <span className={`inline-flex ${showTagline ? "items-start" : "items-end"} ${wrapperClass}`}>
       <Image
         src="/images/logo-icon.png"
         alt="ВЕР СТРОЙ"
         width={iconSize}
         height={iconSize}
         sizes={`${iconSize}px`}
-        className={`shrink-0 ${showTagline ? "mb-0.5" : ""}`}
+        className="shrink-0"
         preload={true}
       />
 
