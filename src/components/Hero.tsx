@@ -102,14 +102,18 @@ export default function Hero() {
             className="mb-6 text-white/80 text-base sm:text-lg lg:text-xl font-light tracking-wide"
           >
             <div className="flex flex-col gap-1 sm:gap-2">
-              <div className="flex justify-between">
+              <div className="flex w-full justify-between items-center">
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Монолитные работы</span>
+                <span className="text-accent text-[7px]">●</span>
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Кровельные работы</span>
+                <span className="text-accent text-[7px]">●</span>
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Фасадные работы</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex w-full justify-between items-center">
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Кладочные работы</span>
+                <span className="text-accent text-[7px]">●</span>
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Отделочные работы</span>
+                <span className="text-accent text-[7px]">●</span>
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Электромонтаж</span>
               </div>
             </div>
@@ -118,10 +122,11 @@ export default function Hero() {
           {/* Geography */}
           <motion.p
             variants={fadeUp}
-            className="mb-12 text-sm sm:text-base text-white/50 tracking-wide font-light flex justify-between"
+            className="mb-12 text-sm sm:text-base text-white/40 tracking-wide font-light flex w-full justify-between items-center"
           >
-            <span>От частных домов до промышленных объектов</span>
             <span>Пермь и вся Россия</span>
+            <span className="text-accent/40 text-[6px]">●</span>
+            <span>От частных домов до промышленных объектов</span>
           </motion.p>
 
           {/* Stats row */}
