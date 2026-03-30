@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 
 const services = [
   {
@@ -129,8 +128,6 @@ const services = [
 ];
 
 export default function Services() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
-
   return (
     <section id="services" className="relative py-24 lg:py-32 bg-bg-dark">
       {/* Top divider */}
@@ -146,9 +143,9 @@ export default function Services() {
 
       {/* Header — centered with container */}
       <motion.div
-        ref={ref}
         initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7 }}
         className="mx-auto max-w-7xl px-6 lg:px-8 mb-16 text-center"
       >
@@ -168,9 +165,10 @@ export default function Services() {
         {services.map((service, i) => (
           <motion.div
             key={service.title}
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
             className="group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] hover:bg-primary/20 transition-all duration-500 cursor-pointer"
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6">
