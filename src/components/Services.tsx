@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
 
 const services = [
   {
@@ -128,6 +129,13 @@ const services = [
 ];
 
 export default function Services() {
+  const [tapped, setTapped] = useState<number | null>(null);
+
+  const handleTap = useCallback((i: number) => {
+    setTapped(i);
+    setTimeout(() => setTapped(null), 400);
+  }, []);
+
   return (
     <section id="services" className="relative py-24 lg:py-32 bg-bg-dark">
       {/* Top divider */}
@@ -157,10 +165,10 @@ export default function Services() {
       {/* Fullwidth strips */}
       <div className="w-full">
         {services.map((service, i) => (
-          <motion.div
+          <div
             key={service.title}
-            whileTap={{ backgroundColor: "rgba(212,168,67,0.1)" }}
-            className="group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] hover:bg-primary/20 transition-all duration-500 cursor-pointer"
+            onClick={() => handleTap(i)}
+            className={`group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] transition-colors duration-300 cursor-pointer ${tapped === i ? "bg-accent/10" : "hover:bg-primary/20"}`}
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6">
               <div className="flex items-center gap-3 lg:gap-8">
@@ -202,7 +210,7 @@ export default function Services() {
 
             {/* Gold line on hover — fullwidth */}
             <div className="absolute bottom-0 left-0 w-full h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>
