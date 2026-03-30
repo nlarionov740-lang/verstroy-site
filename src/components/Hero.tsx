@@ -42,7 +42,7 @@ export default function Hero() {
       <img
         src="/images/hero-bg.jpg"
         alt=""
-        className="absolute inset-0 w-full h-full object-cover sm:hidden"
+        className="absolute inset-0 w-full h-full object-cover [object-position:75%_center] sm:hidden"
       />
 
       {/* Overlays */}
@@ -67,7 +67,7 @@ export default function Hero() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-2xl py-32 lg:py-36 xl:py-40"
+          className="max-w-2xl py-20 sm:py-32 lg:py-36 xl:py-40"
         >
           {/* Accent line */}
           <motion.div
@@ -101,7 +101,14 @@ export default function Hero() {
             variants={fadeUp}
             className="mb-6 text-white/80 text-base sm:text-lg lg:text-xl font-light tracking-wide"
           >
-            <div className="flex flex-col gap-1 sm:gap-2">
+            {/* Mobile: grid 2 columns */}
+            <div className="grid grid-cols-2 gap-1 sm:hidden">
+              {["Монолитные работы", "Кровельные работы", "Фасадные работы", "Кладочные работы", "Отделочные работы", "Электромонтаж"].map((item) => (
+                <span key={item} className="hover:text-accent transition-colors duration-300 cursor-default">{item}</span>
+              ))}
+            </div>
+            {/* Desktop: flex rows with dots */}
+            <div className="hidden sm:flex sm:flex-col sm:gap-2">
               <div className="flex w-full justify-between items-center">
                 <span className="hover:text-accent transition-colors duration-300 cursor-default">Монолитные работы</span>
                 <span className="text-accent text-[7px]">●</span>
@@ -119,10 +126,18 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Geography */}
+          {/* Geography — mobile */}
+          <motion.div
+            variants={fadeUp}
+            className="mb-12 text-sm text-white/40 tracking-wide font-light flex flex-col gap-0.5 sm:hidden"
+          >
+            <span>Пермь и вся Россия</span>
+            <span>От частных домов до промышленных объектов</span>
+          </motion.div>
+          {/* Geography — desktop */}
           <motion.p
             variants={fadeUp}
-            className="mb-12 text-sm sm:text-base text-white/40 tracking-wide font-light flex w-full justify-between items-center"
+            className="mb-12 text-base text-white/40 tracking-wide font-light hidden sm:flex w-full justify-between items-center"
           >
             <span>Пермь и вся Россия</span>
             <span className="text-accent/40 text-[6px]">●</span>

@@ -168,42 +168,46 @@ export default function Services() {
         {services.map((service, i) => (
           <motion.div
             key={service.title}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.08 }}
             className="group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] hover:bg-primary/20 transition-all duration-500 cursor-pointer"
           >
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6 flex items-center gap-6 lg:gap-8">
-              {/* Number */}
-              <span className="font-montserrat text-sm font-bold text-white/20 group-hover:text-accent/60 transition-colors duration-500 w-8 shrink-0 tabular-nums">
-                0{i + 1}
-              </span>
+            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6">
+              <div className="flex items-center gap-3 lg:gap-8">
+                {/* Number */}
+                <span className="font-montserrat text-sm font-bold text-white/20 group-hover:text-accent/60 transition-colors duration-500 w-8 shrink-0 tabular-nums">
+                  0{i + 1}
+                </span>
 
-              {/* Icon */}
-              <div className="text-text-muted group-hover:text-accent transition-all duration-500 shrink-0 group-hover:scale-110">
-                {service.icon}
+                {/* Icon */}
+                <div className="text-text-muted group-hover:text-accent transition-all duration-500 shrink-0 group-hover:scale-110">
+                  {service.icon}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-montserrat text-base lg:text-2xl font-semibold text-white group-hover:text-accent transition-colors duration-300 flex-1 min-w-0">
+                  {service.title}
+                </h3>
+
+                {/* Description — appears on hover (desktop only) */}
+                <p className="hidden lg:block text-text-secondary text-sm max-w-md opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500 whitespace-pre-line">
+                  {service.description}
+                </p>
+
+                {/* Arrow */}
+                <div className="text-white/10 group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shrink-0 hidden sm:block">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </div>
 
-              {/* Title */}
-              <h3 className="font-montserrat text-lg lg:text-2xl font-semibold text-white group-hover:text-accent transition-colors duration-300 flex-1 min-w-0">
-                {service.title}
-              </h3>
-
-              {/* Description — appears on hover (desktop only) */}
-              <p className="hidden lg:block text-text-secondary text-sm max-w-md opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500 whitespace-pre-line">
-                {service.description}
-              </p>
-
-              {/* Description — always visible on mobile */}
-              <p className="lg:hidden text-text-secondary text-sm flex-1 min-w-0 whitespace-pre-line">
-                {service.description}
-              </p>
-
-              {/* Arrow */}
-              <div className="text-white/10 group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shrink-0 hidden sm:block">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+              {/* Description — mobile only, below the title row */}
+              <div className="lg:hidden pl-14 pt-1.5 pb-1">
+                <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line">
+                  {service.description}
+                </p>
               </div>
             </div>
 
