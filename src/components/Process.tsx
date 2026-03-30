@@ -43,9 +43,9 @@ export default function Process() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
   const [active, setActive] = useState<number | null>(null);
 
-  // Auto-open first step when section enters viewport
+  // Auto-open first step on desktop only
   useEffect(() => {
-    if (inView && active === null) {
+    if (inView && active === null && typeof window !== "undefined" && window.innerWidth >= 640) {
       const timer = setTimeout(() => setActive(0), 800);
       return () => clearTimeout(timer);
     }

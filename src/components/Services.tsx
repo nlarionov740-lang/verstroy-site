@@ -165,10 +165,11 @@ export default function Services() {
         {services.map((service, i) => (
           <motion.div
             key={service.title}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: i * 0.06, ease: [0.25, 0.1, 0.25, 1] }}
+            whileTap={{ backgroundColor: "rgba(212,168,67,0.07)", scale: 0.995 }}
             className="group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] hover:bg-primary/20 transition-all duration-500 cursor-pointer"
           >
             <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6">
