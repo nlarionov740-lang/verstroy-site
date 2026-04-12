@@ -1,8 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const bgY = useTransform(scrollY, [0, 800], [0, 200]);
+  const bgScale = useTransform(scrollY, [0, 800], [1, 1.15]);
+  const overlayOpacity = useTransform(scrollY, [0, 600], [0.6, 0.9]);
+
   const handleScroll = (href: string) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -27,26 +33,37 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Background video */}
-      {/* Video on desktop, static image on mobile */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover hidden sm:block"
-        poster="/images/hero-bg.jpg"
+      {/* Background video + image with parallax */}
+      <motion.div
+        className="absolute inset-0 will-change-transform"
+        style={{ y: bgY, scale: bgScale }}
       >
-        <source src="/videos/hero-web.mp4" type="video/mp4" />
-      </video>
-      <img
-        src="/images/hero-bg.jpg"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover [object-position:75%_center] sm:hidden"
-      />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover hidden sm:block"
+          poster="/images/hero-bg.jpg"
+        >
+          <source src="/videos/hero-web.mp4" type="video/mp4" />
+        </video>
+        <Image
+          src="/images/hero-bg.jpg"
+          alt="Строительство"
+          fill
+          priority
+          className="object-cover [object-position:75%_center] sm:hidden"
+          sizes="100vw"
+          quality={85}
+        />
+      </motion.div>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent" />
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-transparent"
+        style={{ opacity: overlayOpacity }}
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/20 to-black/30" />
 
       {/* Subtle grid pattern */}
@@ -84,15 +101,8 @@ export default function Hero() {
               Строим то, что
             </span>
             <span className="block text-3xl leading-[1.08] sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase w-full">
-              <span className="flex justify-between">
-                {'ПРОСТОИТ'.split('').map((char, i) => (
-                  <span key={i} className="text-white">{char}</span>
-                ))}
-                <span className="w-[0.3em]" />
-                {'ВЕКА'.split('').map((char, i) => (
-                  <span key={`v${i}`} className="text-accent">{char}</span>
-                ))}
-              </span>
+              <span className="text-white">ПРОСТОИТ </span>
+              <span className="text-accent">ВЕКА</span>
             </span>
           </motion.h1>
 
@@ -132,7 +142,7 @@ export default function Hero() {
             className="mb-12 text-sm text-white/40 tracking-wide font-light flex flex-col gap-0.5 sm:hidden"
           >
             <span>Пермь и вся Россия</span>
-            <span>От частных домов до промышленных объектов</span>
+            <span>Коммерческие и промышленные объекты по всей России</span>
           </motion.div>
           {/* Geography — desktop */}
           <motion.p
@@ -141,7 +151,7 @@ export default function Hero() {
           >
             <span>Пермь и вся Россия</span>
             <span className="text-accent/40 text-[6px]">●</span>
-            <span>От частных домов до промышленных объектов</span>
+            <span>Коммерческие и промышленные объекты по всей России</span>
           </motion.p>
 
           {/* Stats row */}
