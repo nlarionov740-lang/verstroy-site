@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import TextReveal from "./TextReveal";
+import CountUp from "./CountUp";
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -97,13 +99,9 @@ export default function Hero() {
             variants={fadeUp}
             className="mb-8 font-montserrat font-extrabold inline-block"
           >
-            <span className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase whitespace-nowrap">
-              Строим то, что
-            </span>
-            <span className="block text-3xl leading-[1.08] sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase w-full">
-              <span className="text-white">ПРОСТОИТ </span>
-              <span className="text-accent">ВЕКА</span>
-            </span>
+            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase sm:whitespace-nowrap" delay={0.3}>Строим то, что</TextReveal>
+            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase" delay={0.5}>ПРОСТОИТ</TextReveal>
+            <TextReveal className="block text-3xl leading-[1.08] text-accent sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase" delay={0.7}>ВЕКА</TextReveal>
           </motion.h1>
 
           {/* Services list */}
@@ -160,15 +158,18 @@ export default function Hero() {
             className="mb-12 grid grid-cols-2 gap-x-8 gap-y-6 sm:flex sm:items-center sm:gap-10 lg:gap-12"
           >
             {[
-              { value: "6+", label: "лет опыта" },
-              { value: "22+", label: "объектов сдано" },
-              { value: "25 000", label: "м³ бетона освоено" },
-              { value: "150+", label: "работников" },
+              { end: 6, suffix: "+", label: "лет опыта", duration: 2 },
+              { end: 22, suffix: "+", label: "объектов сдано", duration: 2 },
+              { end: 25, suffix: " 000", label: "м³ бетона освоено", duration: 2.5 },
+              { end: 150, suffix: "+", label: "работников", duration: 2.5 },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col">
-                <span className="font-montserrat text-3xl font-bold text-accent sm:text-4xl lg:text-[2.75rem]">
-                  {stat.value}
-                </span>
+                <CountUp
+                  end={stat.end}
+                  suffix={stat.suffix}
+                  duration={stat.duration}
+                  className="font-montserrat text-3xl font-bold text-accent sm:text-4xl lg:text-[2.75rem]"
+                />
                 <span className="mt-1.5 text-xs text-white/30 uppercase tracking-[0.15em]">
                   {stat.label}
                 </span>

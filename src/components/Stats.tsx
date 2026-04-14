@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { useState, useRef, useCallback } from "react";
+import GradientMesh from "./GradientMesh";
 
 const guarantees = [
   {
@@ -44,17 +46,172 @@ const guarantees = [
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
+interface MouseState {
+  x: number;
+  y: number;
+}
+
+function GuaranteeCard({
+  item,
+  index,
+  inView,
+}: {
+  item: (typeof guarantees)[number];
+  index: number;
+  inView: boolean;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [mouse, setMouse] = useState<MouseState>({ x: 0, y: 0 });
+  const [iconOffset, setIconOffset] = useState<MouseState>({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setMouse({ x, y });
+
+      // Parallax: icon moves toward cursor, coefficient 0.15
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      setIconOffset({
+        x: (x - centerX) * 0.15,
+        y: (y - centerY) * 0.15,
+      });
+    },
+    [],
+  );
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setIconOffset({ x: 0, y: 0 });
+    setMouse({ x: 0, y: 0 });
+  }, []);
+
+  const num = String(index + 1).padStart(2, "0");
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.12, ease }}
+      whileHover={{ y: -10, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative p-8 lg:p-12 xl:p-14 rounded-2xl cursor-default overflow-hidden min-h-[280px] lg:min-h-[340px]"
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(4px)",
+        border: isHovered
+          ? "1px solid rgba(212,168,67,0.3)"
+          : "1px solid rgba(255,255,255,0.08)",
+        boxShadow: isHovered
+          ? "0 20px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,67,0.15)"
+          : "none",
+        transition: "border 400ms ease, box-shadow 400ms ease",
+      }}
+    >
+      {/* Flashlight overlay */}
+      {isHovered && (
+        <div
+          className="absolute inset-0 rounded-2xl pointer-events-none z-10"
+          style={{
+            background: `radial-gradient(circle 300px at ${mouse.x}px ${mouse.y}px, rgba(36,53,88,0.4), transparent)`,
+          }}
+        />
+      )}
+
+      {/* Ghost number */}
+      <span
+        className="absolute top-4 right-6 font-montserrat text-[6rem] lg:text-[8rem] font-bold leading-none select-none pointer-events-none z-0"
+        style={{
+          color: isHovered ? "rgba(212,168,67,0.12)" : "rgba(255,255,255,0.04)",
+          transform: isHovered ? "rotate(5deg)" : "rotate(0deg)",
+          transition: "color 400ms ease, transform 400ms ease",
+        }}
+      >
+        {num}
+      </span>
+
+      {/* Icon with parallax */}
+      <div
+        className="relative z-20 w-16 h-16 lg:w-18 lg:h-18 rounded-xl flex items-center justify-center text-accent mb-8"
+        style={{
+          background: isHovered ? "rgba(212,168,67,0.2)" : "rgba(212,168,67,0.1)",
+          border: isHovered
+            ? "1px solid rgba(212,168,67,0.4)"
+            : "1px solid rgba(212,168,67,0.2)",
+          boxShadow: isHovered
+            ? "0 0 20px rgba(212,168,67,0.2)"
+            : "none",
+          transform: isHovered
+            ? `translate(${iconOffset.x}px, ${iconOffset.y}px) scale(1.1)`
+            : "translate(0px, 0px) scale(1)",
+          transition: "background 400ms ease, border 400ms ease, box-shadow 400ms ease, transform 0.5s ease",
+        }}
+      >
+        {item.icon}
+      </div>
+
+      {/* Gold dash */}
+      <div
+        className="relative z-20 h-[2px] mb-6"
+        style={{
+          width: isHovered ? "3rem" : "2rem",
+          background: isHovered ? "rgba(212,168,67,0.6)" : "rgba(212,168,67,0.3)",
+          transition: "width 500ms ease, background 500ms ease",
+        }}
+      />
+
+      {/* Title */}
+      <h3
+        className="relative z-20 font-montserrat text-xl lg:text-2xl font-semibold mb-4"
+        style={{
+          color: isHovered ? "var(--accent)" : "#FFFFFF",
+          transition: "color 300ms ease",
+        }}
+      >
+        {item.title}
+      </h3>
+
+      {/* Description */}
+      <p className="relative z-20 font-inter text-sm text-white/50 leading-relaxed max-w-[280px]">
+        {item.description}
+      </p>
+
+      {/* Gold line bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[2px] z-20"
+        style={{
+          background: "linear-gradient(to right, rgba(212,168,67,0.8), var(--accent), rgba(212,168,67,0.8))",
+          transform: isHovered ? "scaleX(1)" : "scaleX(0)",
+          transformOrigin: "center",
+          transition: "transform 400ms ease",
+        }}
+      />
+    </motion.div>
+  );
+}
+
 export default function Stats() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
 
   return (
     <section className="relative py-24 lg:py-32 bg-bg-section overflow-hidden">
+      <GradientMesh />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-      {/* Radial accent glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
       <div ref={ref}>
-        {/* Header — in container */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -69,47 +226,15 @@ export default function Stats() {
           </h2>
         </motion.div>
 
-        {/* 4 Numbered Pillars — fullwidth */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+        {/* Cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 px-3 lg:px-4">
           {guarantees.map((item, i) => (
-            <motion.div
+            <GuaranteeCard
               key={item.title}
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 * i, ease }}
-              className="group relative px-8 lg:px-12 py-16 lg:py-20 xl:min-h-[420px]
-                         border-b border-white/[0.06]
-                         xl:border-b-0 xl:border-r xl:border-white/[0.06]
-                         xl:last:border-r-0
-                         hover:bg-gradient-to-t hover:from-accent/[0.07] hover:to-transparent
-                         transition-all duration-500 cursor-default"
-            >
-              {/* Ghost number */}
-              <span className="absolute top-8 right-10 font-montserrat text-[6rem] lg:text-[8rem] font-bold text-white/[0.06] leading-none select-none group-hover:text-accent/[0.08] transition-colors duration-700">
-                0{i + 1}
-              </span>
-
-              {/* Gold bar bottom — slides from center on hover */}
-              <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-accent/80 via-accent to-accent/80 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
-
-              {/* Icon */}
-              <div className="relative w-16 h-16 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mb-6 group-hover:bg-accent/20 group-hover:border-accent/40 group-hover:shadow-[0_0_20px_rgba(212,168,67,0.15)] transition-all duration-500">
-                {item.icon}
-              </div>
-
-              {/* Decorative accent dash */}
-              <div className="relative w-8 h-[2px] bg-accent/30 mb-6 group-hover:w-12 group-hover:bg-accent/60 transition-all duration-500" />
-
-              {/* Title */}
-              <h3 className="relative font-montserrat text-xl font-semibold text-white mb-4 group-hover:text-accent transition-colors duration-300">
-                {item.title}
-              </h3>
-
-              {/* Description */}
-              <p className="relative text-text-secondary text-sm leading-relaxed max-w-[280px] group-hover:text-text-secondary/90 transition-colors duration-300">
-                {item.description}
-              </p>
-            </motion.div>
+              item={item}
+              index={i}
+              inView={inView}
+            />
           ))}
         </div>
       </div>

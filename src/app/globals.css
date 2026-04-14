@@ -43,8 +43,8 @@ body {
   color: var(--text-primary);
   font-family: var(--font-inter-var), system-ui, sans-serif;
   background-image:
-    radial-gradient(circle at top, rgba(212, 168, 67, 0.08), transparent 28%),
-    linear-gradient(180deg, rgba(17, 29, 53, 0.3) 0%, rgba(13, 17, 23, 0) 22%);
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 168, 67, 0.12), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 0% 100%, rgba(27, 42, 74, 0.5), transparent 50%);
   background-attachment: scroll;
 }
 
@@ -52,6 +52,24 @@ body {
   body {
     background-attachment: fixed;
   }
+}
+
+@keyframes meshMove1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(5%, 10%) scale(1.1); }
+  50% { transform: translate(-5%, 5%) scale(0.95); }
+  75% { transform: translate(3%, -8%) scale(1.05); }
+}
+
+@keyframes meshMove2 {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  33% { transform: translate(-8%, 5%) scale(1); }
+  66% { transform: translate(5%, -10%) scale(1.1); }
+}
+
+@keyframes meshMove3 {
+  0%, 100% { transform: translate(0, 0) scale(0.95); }
+  50% { transform: translate(10%, -5%) scale(1.05); }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -148,6 +166,17 @@ html {
   [id] {
     scroll-margin-top: 64px;
   }
+}
+
+/* Shimmer border for service cards */
+@property --shimmer-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes shimmer-spin {
+  to { --shimmer-angle: 360deg; }
 }
 
 /* Hide default cursor for custom dot */

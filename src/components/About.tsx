@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
+import TextReveal from "./TextReveal";
 
 const facts = [
   {
@@ -42,10 +43,11 @@ export default function About() {
 
       <div ref={ref} className="flex flex-col lg:flex-row min-h-[70vh]">
         {/* ── Left column — Photo (38% on desktop) ── */}
+        {/* Улучшение 1: кинетическая глубина вместо простого fade */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 1, ease }}
+          initial={{ opacity: 0, scale: 1.08, y: 20 }}
+          animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           className="relative w-full lg:w-[38%] h-[50vh] lg:h-auto flex-shrink-0"
         >
           <Image
@@ -65,43 +67,49 @@ export default function About() {
         <div className="relative w-full lg:w-[62%] px-5 sm:px-8 lg:px-16 xl:px-20 py-12 lg:py-24 flex flex-col justify-center">
           <div className="max-w-2xl">
           {/* Label */}
+          {/* Улучшение 6: y: 20 → y: 40, duration +0.1s */}
           <motion.span
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease }}
+            transition={{ duration: 0.7, ease }}
             className="text-accent text-sm font-semibold tracking-widest uppercase mb-4 block"
           >
             О компании
           </motion.span>
 
-          {/* Main heading */}
+          {/* Main heading — Улучшение 2: TextReveal по словам */}
           <motion.h2
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.1, ease }}
+            transition={{ duration: 0.8, delay: 0.1, ease }}
             className="font-montserrat font-bold text-white leading-tight"
           >
             <span className="block text-5xl lg:text-6xl xl:text-7xl tracking-tight">
-              ВЕР СТРОЙ
+              <TextReveal delay={0.3} animate={inView}>
+                ВЕР СТРОЙ
+              </TextReveal>
             </span>
             <span className="block text-accent font-semibold mt-3 text-base lg:text-lg tracking-[0.35em]">
               НАДЁЖНЫЙ ПОДРЯДЧИК
             </span>
           </motion.h2>
 
-          {/* Gold accent divider */}
+          {/* Улучшение 4: Gold разделитель удлиняется при hover правой колонки */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={inView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3, ease }}
-            className="mt-8 h-[2px] w-24 bg-gradient-to-r from-accent to-accent/0 origin-left"
+            className="mt-8 h-[2px] bg-gradient-to-r from-accent to-accent/0 origin-left transition-all duration-500"
+            style={{ width: "6rem" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.width = "8rem"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.width = "6rem"; }}
           />
 
-          {/* Text blocks */}
+          {/* Text blocks — Улучшение 6: y: 40, duration +0.1s */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.35, ease }}
+            transition={{ duration: 0.8, delay: 0.35, ease }}
             className="mt-8 space-y-5 text-text-secondary text-base lg:text-lg leading-relaxed"
           >
             <p>
@@ -136,14 +144,20 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* ── Facts 2x2 grid ── */}
+          {/* ── Facts 2x2 grid — Улучшение 3: whileHover подъём + Улучшение 6: y: 40 ── */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
             {facts.map((fact, i) => (
               <motion.div
                 key={fact.num}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.45 + i * 0.1, ease }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.45 + i * 0.1,
+                  ease,
+                  y: { type: "spring", stiffness: 300, damping: 20 },
+                }}
+                whileHover={{ y: -4 }}
                 className="group border-l-2 border-accent/30 hover:border-accent pl-5 transition-all duration-500 cursor-default hover:bg-white/[0.04] rounded-r-lg py-3 -my-1"
               >
                 <span className="text-accent/15 group-hover:text-accent/30 font-montserrat text-4xl font-black tracking-tight transition-colors duration-500 leading-none mb-2 block">
@@ -159,19 +173,22 @@ export default function About() {
             ))}
           </div>
 
-          {/* ── CTA buttons ── */}
+          {/* ── CTA buttons — Улучшение 5: glow + tap + Улучшение 6: y: 40 ── */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.95, ease }}
+            transition={{ duration: 0.6, delay: 0.95, ease }}
             className="mt-12 flex flex-col sm:flex-row gap-4 items-start"
           >
-            <a
+            <motion.a
               href="#contacts"
+              whileHover={{ boxShadow: "0 0 30px rgba(212,168,67,0.4)" }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 bg-accent text-primary-dark font-montserrat font-bold text-sm tracking-wide rounded hover:bg-accent-light transition-colors duration-300"
             >
               Обсудить проект
-            </a>
+            </motion.a>
             <a
               href="#portfolio"
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 border border-white/15 text-white font-montserrat text-sm tracking-wide rounded hover:border-accent/50 hover:text-accent transition-colors duration-300"

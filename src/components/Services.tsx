@@ -1,7 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useState, useCallback } from "react";
+import { motion, useInView } from "framer-motion";
+import { useState, useRef, useCallback, useEffect } from "react";
+
+interface TiltState {
+  rotateX: number;
+  rotateY: number;
+  mouseX: number;
+  mouseY: number;
+  borderAngle: number;
+}
 
 const services = [
   {
@@ -9,7 +17,7 @@ const services = [
     description:
       "Каркасы зданий, перекрытия, стены, колонны — полный спектр монолитного железобетона. Собственный парк опалубки.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <rect x="4" y="20" width="40" height="24" rx="2" stroke="currentColor" strokeWidth="2" />
         <path d="M4 28h40" stroke="currentColor" strokeWidth="2" />
         <path d="M16 20V8l8-4 8 4v12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -23,7 +31,7 @@ const services = [
     description:
       "Ленточные, плитные, свайные и комбинированные фундаменты для объектов любого назначения. Работа в сложных грунтовых условиях.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <path d="M6 44h36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         <path d="M10 44V30h28v14" stroke="currentColor" strokeWidth="2" />
         <path d="M6 30l18-14 18 14" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -37,7 +45,7 @@ const services = [
     description:
       "Кирпич, газоблок, керамические блоки. Несущие стены и перегородки. Любые объёмы, точное соблюдение сроков.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <rect x="6" y="10" width="36" height="28" rx="2" stroke="currentColor" strokeWidth="2" />
         <path d="M6 19h36M6 28h36M18 10v9M30 19v9M18 28v10" stroke="currentColor" strokeWidth="1.5" />
       </svg>
@@ -48,7 +56,7 @@ const services = [
     description:
       "Плоские и скатные кровли. Мембранные, мастичные и рулонные покрытия. Утепление, пароизоляция, водоотведение.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <rect x="8" y="8" width="32" height="36" rx="1" stroke="currentColor" strokeWidth="2" />
         <path d="M8 16h32M8 24h32M8 32h32" stroke="currentColor" strokeWidth="1.5" />
         <path d="M18 8v36M28 8v36" stroke="currentColor" strokeWidth="1.5" />
@@ -62,7 +70,7 @@ const services = [
     description:
       "Навесные вентилируемые, штукатурные и композитные фасадные системы. Утепление, облицовка, декоративные элементы.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <path d="M4 18h40v6H4z" stroke="currentColor" strokeWidth="2" />
         <path d="M8 24v16M16 24v16M24 24v16M32 24v16M40 24v16" stroke="currentColor" strokeWidth="1.5" />
         <path d="M4 40h40" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -76,7 +84,7 @@ const services = [
     description:
       "Черновая и чистовая отделка жилых, коммерческих и промышленных объектов. Полы, стены, потолки, инженерная подготовка.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <rect x="8" y="8" width="32" height="32" rx="2" stroke="currentColor" strokeWidth="2" />
         <path d="M8 20h32M20 8v32" stroke="currentColor" strokeWidth="1.5" />
         <path d="M12 12h4v4h-4zM24 12h4v4h-4zM12 24h4v4h-4zM24 24h4v4h-4z" stroke="currentColor" strokeWidth="1" />
@@ -88,7 +96,7 @@ const services = [
     description:
       "Электроснабжение жилых комплексов, торговых центров и промышленных объектов. Силовые сети, освещение, слаботочные системы.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <path d="M20 4l-4 18h16L28 44" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M10 24h4M34 24h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M12 14l3 2M33 32l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -101,7 +109,7 @@ const services = [
     description:
       "Проектная и рабочая документация. Архитектурные, конструктивные и инженерные разделы. Авторский надзор.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <rect x="6" y="6" width="28" height="36" rx="2" stroke="currentColor" strokeWidth="2" />
         <path d="M12 14h16M12 20h16M12 26h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         <path d="M30 28l12 12M42 28l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -112,9 +120,9 @@ const services = [
   {
     title: "Спецтехника",
     description:
-      "Автокраны, экскаваторы, бетононасосы, погрузчики.\nАренда с оператором и без.",
+      "Автокраны, экскаваторы, бетононасосы, погрузчики. Аренда с оператором и без.",
     icon: (
-      <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6">
+      <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
         <path d="M4 36h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         <rect x="12" y="18" width="20" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
         <path d="M32 26h8a4 4 0 014 4v6H32" stroke="currentColor" strokeWidth="2" />
@@ -128,12 +136,269 @@ const services = [
   },
 ];
 
-export default function Services() {
-  const [tapped, setTapped] = useState<number | null>(null);
+function ServiceCard({
+  service,
+  index,
+  isHovered,
+  isFaded,
+  isInView,
+  onMouseEnter,
+  onMouseLeave,
+  canHover,
+}: {
+  service: (typeof services)[number];
+  index: number;
+  isHovered: boolean;
+  isFaded: boolean;
+  isInView: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  canHover: boolean;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState<TiltState>({
+    rotateX: 0,
+    rotateY: 0,
+    mouseX: 0,
+    mouseY: 0,
+    borderAngle: 0,
+  });
+  const [isHovering, setIsHovering] = useState(false);
 
-  const handleTap = useCallback((i: number) => {
-    setTapped(i);
-    setTimeout(() => setTapped(null), 400);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!canHover || !cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateY = ((x - centerX) / centerX) * 8;
+      const rotateX = ((centerY - y) / centerY) * 8;
+
+      // Angle from center for border glow
+      const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI) + 180;
+
+      setTilt({ rotateX, rotateY, mouseX: x, mouseY: y, borderAngle: angle });
+    },
+    [canHover]
+  );
+
+  const handleEnter = useCallback(() => {
+    setIsHovering(true);
+    onMouseEnter();
+  }, [onMouseEnter]);
+
+  const handleLeave = useCallback(() => {
+    setIsHovering(false);
+    setTilt({ rotateX: 0, rotateY: 0, mouseX: 0, mouseY: 0, borderAngle: 0 });
+    onMouseLeave();
+  }, [onMouseLeave]);
+
+  const num = String(index + 1).padStart(2, "0");
+
+  return (
+    <motion.div
+      className="h-full"
+      initial={{ opacity: 0, y: 30 }}
+      animate={
+        isInView
+          ? { opacity: isFaded ? 0.5 : 1, y: 0 }
+          : { opacity: 0, y: 30 }
+      }
+      transition={{
+        delay: index * 0.06,
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+    >
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 lg:p-10 h-full flex flex-col will-change-transform"
+        style={{
+          transform:
+            canHover && isHovering
+              ? `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg) scale3d(1.04, 1.04, 1.04)`
+              : "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+          transition: isHovering
+            ? "transform 0.15s ease-out"
+            : "transform 0.5s ease-out",
+          borderColor: isHovered
+            ? "rgba(36,53,88,0.6)"
+            : "rgba(255,255,255,0.06)",
+          boxShadow: isHovered
+            ? "0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(27,42,74,0.3), 0 0 80px rgba(212,168,67,0.06)"
+            : "none",
+        }}
+      >
+        {/* Border glow follows mouse */}
+        {canHover && (
+          <div
+            className="absolute inset-0 rounded-2xl pointer-events-none"
+            style={{
+              padding: '1px',
+              background: isHovering
+                ? `conic-gradient(from ${tilt.borderAngle - 30}deg, transparent 0%, rgba(212,168,67,0.7) 8%, #E4BE6A 15%, rgba(212,168,67,0.7) 22%, transparent 30%)`
+                : 'transparent',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
+              transition: isHovering ? 'none' : 'background 0.4s ease',
+              zIndex: 20,
+            }}
+          />
+        )}
+
+        {/* Flashlight overlay */}
+        {canHover && (
+          <div
+            className="absolute inset-0 pointer-events-none rounded-xl"
+            style={{
+              background:
+                isHovering
+                  ? `radial-gradient(circle 350px at ${tilt.mouseX}px ${tilt.mouseY}px, rgba(36,53,88,0.5), transparent)`
+                  : "none",
+            }}
+          />
+        )}
+
+        {/* Dot grid parallax */}
+        <div
+          className="absolute inset-0 pointer-events-none rounded-2xl"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+            opacity: isHovering ? 0.07 : 0.025,
+            transform: isHovering && cardRef.current
+              ? `translate(${((tilt.mouseX / cardRef.current.offsetWidth) - 0.5) * 10}px, ${((tilt.mouseY / cardRef.current.offsetHeight) - 0.5) * 10}px)`
+              : 'translate(0, 0)',
+            transition: 'opacity 400ms ease, transform 0.15s ease-out',
+          }}
+        />
+
+        {/* Top row: icon left, number right */}
+        <div className="flex items-start justify-between relative z-10">
+          <div
+            className="relative overflow-visible"
+            style={{
+              color: isHovered ? "#E4BE6A" : "rgba(255,255,255,0.25)",
+              transform: isHovered ? "scale(1.5) rotate(8deg)" : "scale(1) rotate(0deg)",
+              filter: isHovered
+                ? "drop-shadow(0 0 16px rgba(212,168,67,0.7)) drop-shadow(0 0 40px rgba(212,168,67,0.3))"
+                : "none",
+              transition: "color 400ms ease, transform 400ms cubic-bezier(0.16,1,0.3,1), filter 400ms ease",
+            }}
+          >
+            {isHovering && canHover && (
+              <motion.span
+                className="absolute inset-0 rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(212,168,67,0.35) 0%, transparent 70%)' }}
+                initial={{ scale: 0.4, opacity: 0.7 }}
+                animate={{ scale: 2.5, opacity: 0 }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
+            )}
+            {service.icon}
+          </div>
+          <motion.span
+            key={isHovered ? 'h' : 'd'}
+            initial={{ rotateX: -90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="font-montserrat text-[40px] font-bold leading-none select-none inline-block"
+            style={{
+              color: isHovered ? "rgba(228,190,106,0.6)" : "rgba(255,255,255,0.04)",
+              textShadow: isHovered ? "0 0 30px rgba(212,168,67,0.5)" : "none",
+              transformOrigin: 'top center',
+            }}
+          >
+            {num}
+          </motion.span>
+        </div>
+
+        {/* Divider line */}
+        <div
+          className="h-px bg-accent/50 my-5 origin-center relative z-10"
+          style={{
+            transform: isHovered ? "scaleX(1)" : "scaleX(0)",
+            boxShadow: isHovered ? '0 0 10px rgba(212,168,67,0.4)' : 'none',
+            transition: "transform 400ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 400ms ease",
+          }}
+        />
+
+        {/* Bottom: title + description */}
+        <div className="relative z-10 mt-auto">
+          <h3
+            className="font-montserrat text-xl lg:text-2xl font-semibold"
+            style={{
+              color: isHovered ? "#E4BE6A" : "#fff",
+              transform: isHovered ? "translateX(6px)" : "translateX(0)",
+              letterSpacing: isHovered ? '-0.02em' : '0em',
+              transition: "color 350ms ease, transform 400ms cubic-bezier(0.16,1,0.3,1), letter-spacing 300ms ease",
+            }}
+          >
+            {service.title}
+          </h3>
+          {canHover ? (
+            <div className="font-inter text-sm text-white/50 mt-3 flex flex-wrap gap-x-[0.3em] relative z-10">
+              {service.description.split(' ').map((word, wi) => (
+                <motion.span
+                  key={wi}
+                  initial={false}
+                  animate={isHovered
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 8 }
+                  }
+                  transition={{
+                    duration: 0.25,
+                    delay: isHovered ? wi * 0.02 : 0,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </div>
+          ) : (
+            <p
+              className="font-inter text-sm text-white/50 mt-3"
+              style={{
+                opacity: 1,
+                transform: "translateY(0)",
+              }}
+            >
+              {service.description}
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function Services() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [canHover, setCanHover] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover)");
+    setCanHover(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setCanHover(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const handleMouseEnter = useCallback((i: number) => {
+    setHoveredIndex(i);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredIndex(null);
   }, []);
 
   return (
@@ -149,7 +414,7 @@ export default function Services() {
         }}
       />
 
-      {/* Header — centered with container */}
+      {/* Header */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16 text-center">
         <span className="text-accent text-sm font-semibold tracking-widest uppercase mb-4 block">
           Компетенции
@@ -162,56 +427,23 @@ export default function Services() {
         </p>
       </div>
 
-      {/* Fullwidth strips */}
-      <div className="w-full">
-        {services.map((service, i) => (
-          <div
-            key={service.title}
-            onClick={() => handleTap(i)}
-            className={`group relative w-full border-t border-white/[0.06] last:border-b last:border-white/[0.06] transition-colors duration-300 cursor-pointer ${tapped === i ? "bg-accent/10" : "hover:bg-primary/20"}`}
-          >
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 py-5 lg:py-6">
-              <div className="flex items-center gap-3 lg:gap-8">
-                {/* Number */}
-                <span className="font-montserrat text-sm font-bold text-white/20 group-hover:text-accent/60 transition-colors duration-500 w-8 shrink-0 tabular-nums">
-                  0{i + 1}
-                </span>
-
-                {/* Icon */}
-                <div className="text-text-muted group-hover:text-accent transition-all duration-500 shrink-0 group-hover:scale-110">
-                  {service.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="font-montserrat text-base lg:text-2xl font-semibold text-white group-hover:text-accent transition-colors duration-300 flex-1 min-w-0">
-                  {service.title}
-                </h3>
-
-                {/* Description — appears on hover (desktop only) */}
-                <p className="hidden lg:block text-text-secondary text-sm max-w-md opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500 whitespace-pre-line">
-                  {service.description}
-                </p>
-
-                {/* Arrow */}
-                <div className="text-white/10 group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shrink-0 hidden sm:block">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Description — mobile only, below the title row */}
-              <div className="lg:hidden pl-14 pt-1.5 pb-1">
-                <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Gold line on hover — fullwidth */}
-            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-          </div>
-        ))}
+      {/* Grid */}
+      <div ref={sectionRef} className="px-3 lg:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {services.map((service, i) => (
+            <ServiceCard
+              key={service.title}
+              service={service}
+              index={i}
+              isHovered={hoveredIndex === i}
+              isFaded={hoveredIndex !== null && hoveredIndex !== i}
+              isInView={isInView}
+              onMouseEnter={() => handleMouseEnter(i)}
+              onMouseLeave={handleMouseLeave}
+              canHover={canHover}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

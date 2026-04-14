@@ -24,7 +24,7 @@ export default function BrandLogo({
         height={iconSize}
         sizes={`${iconSize}px`}
         className="shrink-0"
-        preload={true}
+        priority={true}
       />
 
       <span className="flex min-w-0 flex-col">

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useAnimationFrame } from "framer-motion";
+import AnimatedBackground from "./AnimatedBackground";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard, Zoom } from "swiper/modules";
@@ -11,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/zoom";
 import Image from "next/image";
 import { projects, getProjectPhotos, getCoverUrl, type Project } from "@/data/projects";
+import { useTilt } from "@/hooks/useTilt";
 
 /* ── Interactive ticker with drag + auto-scroll ── */
 function TickerMarquee({
@@ -122,6 +124,22 @@ function TickerMarquee({
   );
 }
 
+function TiltCard({ children, onClick, className }: { children: React.ReactNode; onClick: () => void; className?: string }) {
+  const tilt = useTilt({ max: 6, scale: 1.03, speed: 500 });
+  return (
+    <div
+      ref={tilt.ref}
+      onClick={onClick}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      style={tilt.style}
+      className={className}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -176,6 +194,7 @@ export default function Portfolio() {
 
   return (
     <section id="portfolio" className="relative py-24 lg:py-32 bg-bg-section">
+      <AnimatedBackground />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
       <div ref={ref}>
@@ -190,7 +209,7 @@ export default function Portfolio() {
             Портфолио
           </span>
           <h2 className="font-montserrat text-4xl lg:text-5xl font-bold text-white mb-4">
-            Как мы строим
+            Наши объекты
           </h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
             Фотографии с объектов — не для красоты. Это фиксация технологии: как укладываем, как льём, как собираем.
@@ -207,7 +226,7 @@ export default function Portfolio() {
 
         {/* Projects grid — FULLWIDTH */}
         <div className="px-1 sm:px-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-1 sm:gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 sm:gap-3">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, i) => (
                 <motion.div
@@ -217,8 +236,11 @@ export default function Portfolio() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4, delay: 0.04 * i }}
+                  className="aspect-[4/5]"
+                >
+                <TiltCard
                   onClick={() => openGallery(project)}
-                  className="group relative cursor-pointer overflow-hidden aspect-[4/5]"
+                  className="group relative cursor-pointer overflow-hidden w-full h-full"
                 >
                   {/* Cover photo */}
                   <Image
@@ -265,6 +287,7 @@ export default function Portfolio() {
                       </svg>
                     </div>
                   </div>
+                </TiltCard>
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -319,7 +342,7 @@ export default function Portfolio() {
 
                 <button
                   onClick={closeGallery}
-                  className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/8 text-white/60 hover:bg-white/15 hover:text-white transition-all"
+                  className="flex-shrink-0 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white/8 text-white/60 hover:bg-white/15 hover:text-white transition-all"
                   aria-label="Закрыть"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
