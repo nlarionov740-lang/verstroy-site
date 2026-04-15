@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ВЕРСТРОЙ",
-    short_name: "ВЕРСТРОЙ",
+    name: "ВЕР СТРОЙ",
+    short_name: "ВЕР СТРОЙ",
     description: "Монолитное строительство в Перми и Пермском крае.",
     start_url: "/",
     display: "standalone",

@@ -54,6 +54,7 @@ export default function About() {
             src="/images/projects/ozon/016.jpg"
             alt="Монолитный каркас здания — объект ВЕР СТРОЙ"
             fill
+            priority
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 38vw"
           />
@@ -65,7 +66,7 @@ export default function About() {
 
         {/* ── Right column — Content (62% on desktop) ── */}
         <div className="relative w-full lg:w-[62%] px-5 sm:px-8 lg:px-16 xl:px-20 py-12 lg:py-24 flex flex-col justify-center">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl 2xl:max-w-3xl 3xl:max-w-4xl">
           {/* Label */}
           {/* Улучшение 6: y: 20 → y: 40, duration +0.1s */}
           <motion.span
@@ -84,13 +85,13 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="font-montserrat font-bold text-white leading-tight"
           >
-            <span className="block text-5xl lg:text-6xl xl:text-7xl tracking-tight">
+            <span className="block text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl 3xl:text-9xl tracking-tight">
               <TextReveal delay={0.3} animate={inView}>
                 ВЕР СТРОЙ
               </TextReveal>
             </span>
             <span className="block text-accent font-semibold mt-3 text-base lg:text-lg tracking-[0.35em]">
-              НАДЁЖНЫЙ ПОДРЯДЧИК
+              OZON · ЛУКОЙЛ · УКС ПЕРМСКОГО КРАЯ
             </span>
           </motion.h2>
 

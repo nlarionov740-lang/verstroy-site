@@ -83,32 +83,6 @@ function FloatingInput({
   );
 }
 
-const trustBadges = [
-  { icon: "clock", text: "Ответ за 1 час" },
-  { icon: "shield", text: "Бесплатная консультация" },
-  { icon: "calc", text: "Фиксированная цена в договоре" },
-];
-
-function TrustIcon({ type }: { type: string }) {
-  if (type === "clock")
-    return (
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    );
-  if (type === "shield")
-    return (
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-      </svg>
-    );
-  return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25v-.008zm2.498-6h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007v-.008zm2.504-6h.006v.008h-.006v-.008zm0 2.25h.006v.008h-.006v-.008zm0 2.25h.006v.008h-.006v-.008zm0 2.25h.006v.008h-.006v-.008zm2.49-6h.01v.008h-.01v-.008zm0 2.25h.01v.008h-.01v-.008zm0 2.25h.01v.008h-.01v-.008zm0 2.25h.01v.008h-.01v-.008zM6 18.75a2.25 2.25 0 002.248 2.25H9m-3-5.25V6.75A2.25 2.25 0 018.25 4.5h7.5A2.25 2.25 0 0118 6.75v1.5" />
-    </svg>
-  );
-}
-
 function MagneticWrap({ children }: { children: React.ReactNode }) {
   const mag = useMagnetic({ strength: 0.25 });
   return (
@@ -169,15 +143,19 @@ export default function Contacts() {
 
   return (
     <section id="contacts" className="relative bg-bg-section overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-accent/[0.04] rounded-full blur-[120px]" />
+      </div>
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent z-10" />
 
-      <div ref={ref} className="grid lg:grid-cols-2">
+      <div ref={ref} className="relative grid lg:grid-cols-2">
+        <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
         {/* ── Left — Contact Info ── */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, ease }}
-          className="relative py-20 lg:py-28 px-6 lg:px-12 xl:px-16 flex flex-col justify-center"
+          className="relative py-20 lg:py-28 px-6 lg:px-12 xl:px-16 2xl:px-20 3xl:px-24 flex flex-col justify-center"
         >
           {/* Online indicator — hidden until client hydration */}
           {isOnline !== null && (
@@ -209,7 +187,7 @@ export default function Contacts() {
             Контакты
           </span>
           <h2 className="font-montserrat text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
-            Начнём{" "}
+            Расскажите про{" "}
             <motion.span
               className="text-accent inline-block"
               style={{
@@ -221,15 +199,14 @@ export default function Contacts() {
               animate={{ backgroundPosition: ["0% center", "200% center"] }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             >
-              строить
-            </motion.span>{" "}
-            вместе
+              объект
+            </motion.span>
           </h2>
           <p className="text-text-secondary text-lg mb-12">
-            Рассчитаем стоимость за 1 рабочий день
+            Считаем смету за 1 рабочий день. Выезд на объект бесплатно.
           </p>
 
-          <div className="space-y-5">
+          <div className="space-y-2">
             {/* Phone */}
             <motion.a
               href="tel:+79504511611"
@@ -237,11 +214,11 @@ export default function Contacts() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2, ease }}
               whileHover={{ scale: 1.02, x: 8 }}
-              className="group flex items-center gap-5 p-4 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
+              className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
             >
-              <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-lg group-hover:shadow-accent/20">
-                <span className="absolute inset-[-4px] rounded-xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
+                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
               </div>
@@ -260,11 +237,11 @@ export default function Contacts() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3, ease }}
               whileHover={{ scale: 1.02, x: 8 }}
-              className="group flex items-center gap-5 p-4 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
+              className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
             >
-              <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-lg group-hover:shadow-accent/20">
-                <span className="absolute inset-[-4px] rounded-xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
+                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
@@ -286,11 +263,11 @@ export default function Contacts() {
                 type="button"
                 onClick={() => setShowMap(!showMap)}
                 whileHover={{ scale: 1.02, x: 8 }}
-                className="group flex items-center gap-5 p-4 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300 w-full text-left"
+                className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300 w-full text-left"
               >
-                <div className="relative flex-shrink-0 w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-lg group-hover:shadow-accent/20">
-                  <span className="absolute inset-[-4px] rounded-xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
+                  <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0115 0z" />
                   </svg>
@@ -345,16 +322,16 @@ export default function Contacts() {
           initial={{ opacity: 0, x: 30 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.3, ease }}
-          className="relative bg-transparent py-20 lg:py-28 px-6 lg:px-12 xl:px-16 flex items-center justify-center"
+          className="relative bg-transparent py-20 lg:py-28 px-6 lg:px-12 xl:px-16 2xl:px-20 3xl:px-24 flex items-center justify-center"
         >
 
-          <div className="relative w-full max-w-md">
-              <div className="relative bg-white/[0.03] backdrop-blur-xl rounded-2xl p-8 lg:p-12 border border-white/[0.06]">
+          <div className="relative w-full max-w-md 2xl:max-w-lg">
+              <div className="relative bg-white/[0.03] backdrop-blur-xl rounded-2xl p-8 lg:p-12 border border-white/[0.10] shadow-[0_0_60px_-20px_rgba(212,168,67,0.12)]">
                 <h3 className="font-montserrat text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Обсудим ваш проект
+                  Оставьте заявку
                 </h3>
                 <p className="text-text-secondary mb-10 leading-relaxed">
-                  Оставьте номер — перезвоним в течение часа
+                  Оставьте номер — перезвоним и обсудим детали
                 </p>
 
                 {/* Form */}
@@ -405,7 +382,7 @@ export default function Contacts() {
                 </form>
 
                 {/* Trust line */}
-                <div className="flex items-center justify-center gap-6 mt-8 text-white/30 text-xs">
+                <div className="flex flex-wrap items-center justify-center gap-4 mt-8 text-white/30 text-xs">
                   <span className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5 text-accent/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -417,7 +394,7 @@ export default function Contacts() {
                     <svg className="w-3.5 h-3.5 text-accent/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                     </svg>
-                    Бесплатно
+                    Без обязательств
                   </span>
                 </div>
 
@@ -465,7 +442,7 @@ export default function Contacts() {
                   )}
                 </AnimatePresence>
 
-                <p className="text-white/20 text-[11px] mt-6 text-center">
+                <p className="text-white/40 text-[11px] mt-6 text-center">
                   Нажимая кнопку, вы соглашаетесь на{" "}
                   <a href="/privacy" className="underline hover:text-accent transition-colors">
                     обработку персональных данных

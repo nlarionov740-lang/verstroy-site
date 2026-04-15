@@ -216,7 +216,7 @@ function ServiceCard({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 lg:p-10 h-full flex flex-col will-change-transform"
+        className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 lg:p-10 h-full flex flex-col"
         style={{
           transform:
             canHover && isHovering
@@ -339,7 +339,7 @@ function ServiceCard({
             {service.title}
           </h3>
           {canHover ? (
-            <div className="font-inter text-sm text-white/50 mt-3 flex flex-wrap gap-x-[0.3em] relative z-10">
+            <div className="text-sm text-white/50 mt-3 flex flex-wrap gap-x-[0.3em] relative z-10">
               {service.description.split(' ').map((word, wi) => (
                 <motion.span
                   key={wi}
@@ -360,7 +360,7 @@ function ServiceCard({
             </div>
           ) : (
             <p
-              className="font-inter text-sm text-white/50 mt-3"
+              className="text-sm text-white/50 mt-3"
               style={{
                 opacity: 1,
                 transform: "translateY(0)",
@@ -411,7 +411,7 @@ export default function Services() {
       />
 
       {/* Header */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-16 text-center">
+      <div className="mx-auto max-w-7xl 2xl:max-w-[1400px] 3xl:max-w-[1600px] px-6 lg:px-8 mb-16 text-center">
         <span className="text-accent text-sm font-semibold tracking-widest uppercase mb-4 block">
           Компетенции
         </span>
@@ -424,8 +424,8 @@ export default function Services() {
       </div>
 
       {/* Grid */}
-      <div ref={sectionRef} className="px-3 lg:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div ref={sectionRef} className="px-3 lg:px-6 2xl:px-12 3xl:px-16">
+        <div className="max-w-[1600px] 3xl:max-w-[1920px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {services.map((service, i) => (
             <ServiceCard
               key={service.title}

@@ -164,7 +164,7 @@ export default function Process() {
             <motion.div className="h-full bg-accent origin-left" style={{ scaleX: smoothProgress }} />
           </motion.div>
           {/* Left Sticky Panel — 40% */}
-          <div className="w-[40%] relative flex items-center justify-center px-12 xl:px-16">
+          <div className="w-[40%] relative flex items-center justify-center px-12 xl:px-16 2xl:px-20 3xl:px-24">
             <div className="relative">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -183,7 +183,7 @@ export default function Process() {
                     {steps[activeStep].title}
                   </h3>
                   {/* Description */}
-                  <p className="font-inter text-base text-white/60 mt-4 max-w-sm">
+                  <p className="text-base text-white/60 mt-4 max-w-sm">
                     {steps[activeStep].description}
                   </p>
 
@@ -289,7 +289,7 @@ export default function Process() {
               {steps.map((step, i) => (
                 <div
                   key={step.num}
-                  className="h-[70vh] flex items-center px-12 xl:px-16 relative"
+                  className="h-[70vh] flex items-center px-12 xl:px-16 2xl:px-20 relative"
                 >
                   {/* Watermark number */}
                   <span className="absolute right-8 top-1/2 -translate-y-1/2 font-montserrat text-[180px] font-bold leading-none text-white/[0.02] select-none pointer-events-none" aria-hidden="true">
@@ -303,7 +303,7 @@ export default function Process() {
                         : { opacity: 0, x: 30 }
                     }
                     transition={{ duration: 0.6, ease }}
-                    className="max-w-lg"
+                    className="max-w-lg 2xl:max-w-xl"
                   >
                     {/* Step label */}
                     <span className="text-accent text-sm font-semibold tracking-widest uppercase">
@@ -392,7 +392,7 @@ export default function Process() {
               <h3 className="font-montserrat text-xl font-bold text-white mt-2">
                 {step.title}
               </h3>
-              <p className="font-inter text-sm text-white/60 mt-2">
+              <p className="text-sm text-white/60 mt-2">
                 {step.description}
               </p>
               <div className="mt-4 space-y-2">

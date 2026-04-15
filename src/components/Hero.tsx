@@ -52,7 +52,7 @@ export default function Hero() {
         </video>
         <Image
           src="/images/hero-bg.jpg"
-          alt="Строительство"
+          alt="Строительная компания ВЕР СТРОЙ — монолитные работы в Перми"
           fill
           priority
           className="object-cover [object-position:75%_center] sm:hidden"
@@ -81,12 +81,12 @@ export default function Hero() {
       {/* Radial glow behind content */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-accent/4 rounded-full blur-[150px]" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl 2xl:max-w-[1400px] 3xl:max-w-[1600px] px-6 lg:px-8 2xl:px-12 3xl:px-16">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-2xl py-20 sm:py-32 lg:py-36 xl:py-40"
+          className="max-w-2xl 2xl:max-w-3xl 3xl:max-w-4xl py-20 sm:py-32 lg:py-36 xl:py-40"
         >
           {/* Accent line */}
           <motion.div
@@ -99,9 +99,9 @@ export default function Hero() {
             variants={fadeUp}
             className="mb-8 font-montserrat font-extrabold inline-block"
           >
-            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase sm:whitespace-nowrap" delay={0.3}>Строим то, что</TextReveal>
-            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase" delay={0.5}>ПРОСТОИТ</TextReveal>
-            <TextReveal className="block text-3xl leading-[1.08] text-accent sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] uppercase" delay={0.7}>ВЕКА</TextReveal>
+            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase sm:whitespace-nowrap" delay={0.3}>Строим то, что</TextReveal>
+            <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase" delay={0.5}>ПРОСТОИТ</TextReveal>
+            <TextReveal className="block text-3xl leading-[1.08] text-accent sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase" delay={0.7}>ВЕКА</TextReveal>
           </motion.h1>
 
           {/* Services list */}
@@ -168,7 +168,7 @@ export default function Hero() {
                   end={stat.end}
                   suffix={stat.suffix}
                   duration={stat.duration}
-                  className="font-montserrat text-3xl font-bold text-accent sm:text-4xl lg:text-[2.75rem]"
+                  className="font-montserrat text-3xl font-bold text-accent sm:text-4xl lg:text-[2.75rem] 2xl:text-5xl"
                 />
                 <span className="mt-1.5 text-xs text-white/30 uppercase tracking-[0.15em]">
                   {stat.label}

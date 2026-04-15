@@ -57,7 +57,7 @@ export default function Header() {
             : "bg-primary-dark/36 backdrop-blur-sm"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl 2xl:max-w-[1400px] 3xl:max-w-[1600px] px-6 lg:px-8">
           <div className="flex h-18 items-center justify-between md:h-20">
             {/* Logo */}
             <a

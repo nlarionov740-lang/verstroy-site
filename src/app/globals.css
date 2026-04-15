@@ -27,7 +27,7 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --font-montserrat: var(--font-montserrat-var);
-  --font-inter: var(--font-inter-var);
+  --breakpoint-3xl: 1920px;
 }
 
 html {
@@ -41,7 +41,7 @@ html {
 body {
   background: var(--bg-dark);
   color: var(--text-primary);
-  font-family: var(--font-inter-var), system-ui, sans-serif;
+  font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   background-image:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 168, 67, 0.12), transparent 60%),
     radial-gradient(ellipse 40% 30% at 0% 100%, rgba(27, 42, 74, 0.5), transparent 50%);
@@ -166,17 +166,6 @@ html {
   [id] {
     scroll-margin-top: 64px;
   }
-}
-
-/* Shimmer border for service cards */
-@property --shimmer-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes shimmer-spin {
-  to { --shimmer-angle: 360deg; }
 }
 
 /* Hide default cursor for custom dot */

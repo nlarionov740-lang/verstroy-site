@@ -225,8 +225,8 @@ export default function Portfolio() {
         />
 
         {/* Projects grid — FULLWIDTH */}
-        <div className="px-1 sm:px-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 sm:gap-3">
+        <div className="px-1 sm:px-2 2xl:px-8 3xl:px-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-2 sm:gap-3">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, i) => (
                 <motion.div
@@ -245,7 +245,7 @@ export default function Portfolio() {
                   {/* Cover photo */}
                   <Image
                     src={getCoverUrl(project.slug)}
-                    alt={project.name}
+                    alt={`${project.name} — ${project.type} в ${project.location}`}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"

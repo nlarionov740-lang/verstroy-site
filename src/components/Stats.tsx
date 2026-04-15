@@ -183,7 +183,7 @@ function GuaranteeCard({
       </h3>
 
       {/* Description */}
-      <p className="relative z-20 font-inter text-sm text-white/50 leading-relaxed max-w-[280px]">
+      <p className="relative z-20 text-sm text-white/50 leading-relaxed max-w-[280px]">
         {item.description}
       </p>
 
@@ -222,12 +222,12 @@ export default function Stats() {
             Гарантии
           </span>
           <h2 className="font-montserrat text-4xl lg:text-5xl font-bold text-white">
-            Почему выбирают нас
+            Наши обязательства перед заказчиком
           </h2>
         </motion.div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 px-3 lg:px-4">
+        <div className="max-w-[1600px] 3xl:max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 px-3 lg:px-4 2xl:px-12 3xl:px-16">
           {guarantees.map((item, i) => (
             <GuaranteeCard
               key={item.title}

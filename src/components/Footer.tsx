@@ -18,80 +18,111 @@ export default function Footer() {
     <footer className="relative bg-primary-dark border-t border-white/5">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-12 py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-24">
+      <div className="mx-auto max-w-7xl 2xl:max-w-[1400px] 3xl:max-w-[1600px] px-6 lg:px-16 py-20 lg:py-28">
+        {/* Decorative line */}
+        <div className="flex items-center gap-4 mb-14 lg:mb-16">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
+          <span className="text-[11px] uppercase tracking-[0.35em] text-white/20 font-montserrat">
+            ВЕР СТРОЙ — Пермь
+          </span>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
+        </div>
+
+        {/* Main grid — 2 columns on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
 
           {/* LEFT — logo + description + contacts */}
           <motion.div
-            className="lg:col-span-3 flex flex-col gap-10"
+            className="flex flex-col gap-10"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="inline-flex items-center gap-4"
-              aria-label="ВЕР СТРОЙ, прокрутить наверх"
-            >
-              <Image
-                src="/images/logo-icon.png"
-                alt="ВЕР СТРОЙ"
-                width={52}
-                height={52}
-                className="shrink-0"
-                priority
-              />
-              <span className="flex flex-col">
-                <span className="font-montserrat font-semibold uppercase text-2xl tracking-[0.32em] leading-none text-white">
-                  ВЕР <span className="text-accent">СТРОЙ</span>
+            {/* Logo + description */}
+            <div className="flex flex-col gap-10">
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-4"
+                aria-label="ВЕР СТРОЙ, прокрутить наверх"
+              >
+                <Image
+                  src="/images/logo-icon.png"
+                  alt="ВЕР СТРОЙ"
+                  width={48}
+                  height={48}
+                  className="shrink-0"
+                  loading="lazy"
+                />
+                <span className="flex flex-col">
+                  <span className="font-montserrat font-semibold uppercase text-xl tracking-[0.3em] leading-none text-white">
+                    ВЕР <span className="text-accent">СТРОЙ</span>
+                  </span>
+                  <span className="mt-2 text-[11px] uppercase tracking-[0.2em] text-white/35">
+                    Строительная компания
+                  </span>
                 </span>
-                <span className="mt-2 text-[12px] uppercase tracking-[0.28em] text-white/40">
-                  Строительная компания
+              </a>
+
+              <p className="text-white/50 text-[15px] leading-[1.8]">
+                Строим в Пермском крае с 2020 года — от фундамента до сдачи объекта.
+                Монолит, фасады, кровля — выполняем своими силами.
+              </p>
+            </div>
+
+            {/* Contacts — horizontal grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+              <div className="flex flex-col gap-2">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-montserrat">
+                  Телефон
                 </span>
-              </span>
-            </a>
-
-            <p className="text-white/60 text-[16px] leading-[1.85] max-w-[420px]">
-              Строим в Пермском крае с 2020 года — от фундамента до сдачи объекта. Каждый проект ведём сами, без субподряда на ключевых этапах.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-8 sm:gap-12 pt-2">
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-2">Телефон</p>
-                <a href="tel:+79504511611" className="text-[18px] font-montserrat font-medium text-white hover:text-accent transition-colors">
+                <a
+                  href="tel:+79504511611"
+                  className="text-[16px] font-montserrat font-medium text-white hover:text-accent transition-colors whitespace-nowrap"
+                >
                   8 (950) 451-16-11
                 </a>
               </div>
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-2">Email</p>
-                <a href="mailto:ver.stroy.company@mail.ru" className="text-[15px] text-white/60 hover:text-accent transition-colors break-all">
+              <div className="flex flex-col gap-2">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-montserrat">
+                  Email
+                </span>
+                <a
+                  href="mailto:ver.stroy.company@mail.ru"
+                  className="text-[15px] text-white/50 hover:text-accent transition-colors sm:break-normal break-all"
+                >
                   ver.stroy.company@mail.ru
                 </a>
               </div>
-              <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-2">Адрес</p>
-                <address className="not-italic text-[15px] text-white/60 leading-[1.6]">
-                  г. Пермь, ул. Монастырская,<br />д. 12, оф. 407
-                </address>
+              <div className="flex flex-col gap-2">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-white/25 font-montserrat">
+                  Адрес
+                </span>
+                <a
+                  href="https://yandex.ru/maps/-/CHEFj0g"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="not-italic text-[15px] text-white/50 hover:text-accent transition-colors"
+                >
+                  г. Пермь, ул. Монастырская, д. 12, оф. 407
+                </a>
               </div>
             </div>
           </motion.div>
 
           {/* RIGHT — services */}
           <motion.div
-            className="lg:col-span-2"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.15 }}
           >
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-white/30 font-montserrat font-semibold mb-8">
-              Направления работ
+            <h4 className="text-[11px] uppercase tracking-[0.25em] text-white/25 font-montserrat font-semibold mb-8">
+              Специализация
             </h4>
             <ul className="space-y-5">
               {services.map((service, i) => (
@@ -103,10 +134,10 @@ export default function Footer() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 + i * 0.07 }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors shrink-0" />
-                  <span className="text-[16px] text-white/60 hover:text-white transition-colors cursor-default leading-snug">
+                  <span className="w-5 h-px bg-accent/40 group-hover:bg-accent group-hover:w-7 transition-all duration-300 shrink-0" />
+                  <a href="#services" className="text-[15px] text-white/50 hover:text-white/80 transition-colors">
                     {service}
-                  </span>
+                  </a>
                 </motion.li>
               ))}
             </ul>
@@ -117,12 +148,18 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/5">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12 py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-white/25 text-[13px]">
+        <motion.div
+          className="mx-auto max-w-7xl 2xl:max-w-[1400px] 3xl:max-w-[1600px] px-6 lg:px-16 py-6 flex flex-col sm:flex-row justify-between items-center gap-3"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <p className="text-white/20 text-[13px]">
             &copy; {currentYear} ВЕР СТРОЙ. Все права защищены.
           </p>
-          <div className="flex items-center gap-6 text-[13px] text-white/25">
-            <span>Строительная компания в Перми</span>
+          <div className="flex items-center gap-6 text-[13px] text-white/20">
+            <a href="/privacy" className="hover:text-accent transition-colors">Политика конфиденциальности</a>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="flex items-center gap-2 hover:text-accent transition-colors"
@@ -133,7 +170,7 @@ export default function Footer() {
               Наверх
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

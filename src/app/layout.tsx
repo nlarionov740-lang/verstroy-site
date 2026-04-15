@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import MotionProvider from "@/components/MotionProvider";
 
 const siteUrl = "https://xn--b1agmtjagi.xn--p1ai";
 
@@ -51,6 +52,12 @@ const structuredData = {
         },
       ],
       sameAs: ["https://vk.com/ver.stroy"],
+      priceRange: "₽₽",
+      image: `${siteUrl}/og-image.jpg`,
+      numberOfEmployees: {
+        "@type": "QuantitativeValue",
+        value: 150,
+      },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Строительные услуги",
@@ -116,12 +123,7 @@ const structuredData = {
 const montserrat = Montserrat({
   variable: "--font-montserrat-var",
   subsets: ["latin", "cyrillic"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter-var",
-  subsets: ["latin", "cyrillic"],
+  weight: ["400", "600", "700", "800"],
   display: "swap",
 });
 
@@ -129,11 +131,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default:
-      "ВЕР СТРОЙ — строительная компания в Перми | Монолит, кровля, фасад, кладка",
+      "ВЕР СТРОЙ — строительная компания Пермь | Монолит, кровля",
     template: "%s | ВЕР СТРОЙ",
   },
   description:
-    "Строительная компания ВЕР СТРОЙ (г. Пермь). Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания. Звоните: 8 950 451 1611",
+    "Строительная компания ВЕР СТРОЙ в Перми. Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания.",
   keywords: [
     "строительная компания Пермь",
     "монолитные работы Пермь",
@@ -167,9 +169,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:
-      "ВЕР СТРОЙ — строительная компания в Перми | Монолит, кровля, фасад, кладка",
+      "ВЕР СТРОЙ — строительная компания в Перми",
     description:
-      "Строительная компания ВЕР СТРОЙ (г. Пермь). Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания.",
+      "Строительная компания ВЕР СТРОЙ в Перми. Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания.",
     url: siteUrl,
     locale: "ru_RU",
     type: "website",
@@ -186,9 +188,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "ВЕР СТРОЙ — строительная компания в Перми | Монолит, кровля, фасад, кладка",
+      "ВЕР СТРОЙ — строительная компания в Перми",
     description:
-      "Строительная компания ВЕР СТРОЙ (г. Пермь). Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания.",
+      "Строительная компания ВЕР СТРОЙ в Перми. Монолитные работы, кровля, фасад, кладка. 6+ лет, 22+ объектов. Коммерческие и промышленные здания.",
     images: ["/og-image.jpg"],
   },
 };
@@ -201,7 +203,7 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      className={`${montserrat.variable} ${inter.variable} antialiased`}
+      className={`${montserrat.variable} antialiased`}
     >
       <body className="min-h-screen bg-bg-dark text-text-primary">
         <script
@@ -209,7 +211,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <CustomCursor />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

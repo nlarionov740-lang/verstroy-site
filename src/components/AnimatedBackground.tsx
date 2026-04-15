@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
+  const isVisibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -26,6 +27,20 @@ export default function AnimatedBackground() {
 
     resize();
     window.addEventListener("resize", resize);
+
+    // Pause animation when canvas is not visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const wasVisible = isVisibleRef.current;
+        isVisibleRef.current = entry.isIntersecting;
+        // Resume animation loop when becoming visible again
+        if (!wasVisible && entry.isIntersecting) {
+          animRef.current = requestAnimationFrame(draw);
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
 
     // ─── Draw functions for construction icons ────────────────────────
 
@@ -250,6 +265,8 @@ export default function AnimatedBackground() {
 
     // ─── Animation ────────────────────────────────────────────────────
     function draw() {
+      if (!isVisibleRef.current) return;
+
       ctx!.clearRect(0, 0, w, h);
 
       for (const s of shapes) {
@@ -280,6 +297,7 @@ export default function AnimatedBackground() {
 
     return () => {
       cancelAnimationFrame(animRef.current);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
     };
   }, []);
