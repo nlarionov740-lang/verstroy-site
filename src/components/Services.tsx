@@ -207,9 +207,8 @@ function ServiceCard({
           : { opacity: 0, y: 30 }
       }
       transition={{
-        delay: index * 0.06,
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1],
+        opacity: { duration: 0.3 },
+        y: { delay: index * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] },
       }}
     >
       <div
@@ -289,7 +288,7 @@ function ServiceCard({
               filter: isHovered
                 ? "drop-shadow(0 0 16px rgba(212,168,67,0.7)) drop-shadow(0 0 40px rgba(212,168,67,0.3))"
                 : "none",
-              transition: "color 400ms ease, transform 400ms cubic-bezier(0.16,1,0.3,1), filter 400ms ease",
+              transition: "color 0.15s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1), filter 0.2s ease",
             }}
           >
             {isHovering && canHover && (
@@ -303,20 +302,17 @@ function ServiceCard({
             )}
             {service.icon}
           </div>
-          <motion.span
-            key={isHovered ? 'h' : 'd'}
-            initial={{ rotateX: -90, opacity: 0 }}
-            animate={{ rotateX: 0, opacity: 1 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          <span
             className="font-montserrat text-[40px] font-bold leading-none select-none inline-block"
             style={{
               color: isHovered ? "rgba(228,190,106,0.6)" : "rgba(255,255,255,0.04)",
               textShadow: isHovered ? "0 0 30px rgba(212,168,67,0.5)" : "none",
-              transformOrigin: 'top center',
+              transform: isHovered ? "scale(1.15) translateY(-4px)" : "scale(1) translateY(0)",
+              transition: "color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease",
             }}
           >
             {num}
-          </motion.span>
+          </span>
         </div>
 
         {/* Divider line */}
