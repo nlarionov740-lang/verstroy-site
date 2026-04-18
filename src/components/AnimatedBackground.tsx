@@ -236,7 +236,8 @@ export default function AnimatedBackground() {
     ];
 
     // ─── Create shapes ────────────────────────────────────────────────
-    const SHAPE_COUNT = window.innerWidth < 768 ? 20 : 40;
+    const isMobile = window.innerWidth < 768;
+    const SHAPE_COUNT = isMobile ? 12 : 40;
     const shapes: {
       x: number;
       y: number;
@@ -251,15 +252,17 @@ export default function AnimatedBackground() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const speedMultiplier = isMobile ? 5 : 1;
     for (let i = 0; i < SHAPE_COUNT; i++) {
       shapes.push({
         x: Math.random(),
-        y: Math.random(),
-        vx: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006,
-        vy: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006,
-        size: 30 + Math.random() * 40,
+        // На мобиле — принудительное распределение по 4 зонам, чтобы сразу были в viewport
+        y: isMobile ? (i % 4) / 4 + Math.random() * 0.2 : Math.random(),
+        vx: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006 * speedMultiplier,
+        vy: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006 * speedMultiplier,
+        size: isMobile ? 25 + Math.random() * 20 : 30 + Math.random() * 40,
         rotation: Math.random() * Math.PI * 2,
-        rotSpeed: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.005,
+        rotSpeed: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.005 * speedMultiplier * 0.6,
         drawFn: drawFns[i % drawFns.length],
         alpha: 0.12 + Math.random() * 0.08,
       });
