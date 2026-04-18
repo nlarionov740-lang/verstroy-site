@@ -51,7 +51,7 @@ export default function About() {
           className="relative w-full lg:w-[38%] h-[50vh] lg:h-auto flex-shrink-0"
         >
           <Image
-            src="/images/projects/ozon/016.jpg"
+            src="https://pub-bb1561168dcd45c991b3b95d38e591d4.r2.dev/projects/ozon/016.jpg"
             alt="Монолитный каркас здания — объект ВЕР СТРОЙ"
             fill
             priority
