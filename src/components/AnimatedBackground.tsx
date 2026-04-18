@@ -236,7 +236,7 @@ export default function AnimatedBackground() {
     ];
 
     // ─── Create shapes ────────────────────────────────────────────────
-    const SHAPE_COUNT = 14;
+    const SHAPE_COUNT = window.innerWidth < 768 ? 20 : 40;
     const shapes: {
       x: number;
       y: number;
@@ -249,17 +249,19 @@ export default function AnimatedBackground() {
       alpha: number;
     }[] = [];
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     for (let i = 0; i < SHAPE_COUNT; i++) {
       shapes.push({
         x: Math.random(),
         y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.0001,
-        vy: (Math.random() - 0.5) * 0.0001,
+        vx: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006,
+        vy: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.0006,
         size: 30 + Math.random() * 40,
         rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.002,
+        rotSpeed: prefersReducedMotion ? 0 : (Math.random() - 0.5) * 0.005,
         drawFn: drawFns[i % drawFns.length],
-        alpha: 0.07 + Math.random() * 0.05,
+        alpha: 0.12 + Math.random() * 0.08,
       });
     }
 
@@ -283,7 +285,7 @@ export default function AnimatedBackground() {
         ctx!.translate(s.x * w, s.y * h);
         ctx!.rotate(s.rotation);
         ctx!.strokeStyle = `rgba(212, 168, 67, ${s.alpha})`;
-        ctx!.lineWidth = 1;
+        ctx!.lineWidth = 1.2;
         ctx!.lineCap = "round";
         ctx!.lineJoin = "round";
         s.drawFn(ctx!, s.size);
