@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import BrandLogo from "@/components/BrandLogo";
 
 const navLinks = [
@@ -89,6 +90,15 @@ export default function Header() {
                 </a>
               ))}
 
+              {/* Vacancies */}
+              <Link
+                href="/vakansii"
+                className="relative text-sm font-medium text-text-secondary hover:text-white transition-colors duration-300 group"
+              >
+                Вакансии
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
+              </Link>
+
               {/* Phone */}
               <a
                 href="tel:+79504511611"
@@ -150,6 +160,21 @@ export default function Header() {
                   {link.label}
                 </motion.a>
               ))}
+
+              {/* Vacancies in mobile menu — Next.js Link + закрытие меню по клику */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + navLinks.length * 0.1 }}
+              >
+                <Link
+                  href="/vakansii"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-2xl font-montserrat font-semibold text-white hover:text-accent transition-colors"
+                >
+                  Вакансии
+                </Link>
+              </motion.div>
 
               {/* Phone in mobile menu */}
               <motion.a
