@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import WeldingSparks from "@/components/WeldingSparks";
 import BlueprintBackground from "@/components/BlueprintBackground";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -523,22 +522,6 @@ function ApplyForm({
 
 export default function VakansiPage() {
   const [applySpecialty, setApplySpecialty] = useState<string | null>(null);
-  const heroRef = useRef<HTMLElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const sparksOpacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0, 0, 1]);
 
   return (
     <>
@@ -555,17 +538,7 @@ export default function VakansiPage() {
       <div className="min-h-screen bg-bg-dark text-white">
 
         {/* ── Hero ── */}
-        <section ref={heroRef} className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 px-6 overflow-hidden">
-          {isMobile ? (
-            <motion.div
-              style={{ opacity: sparksOpacity }}
-              className="absolute inset-0 pointer-events-none"
-            >
-              <WeldingSparks scrollProgress={scrollYProgress} />
-            </motion.div>
-          ) : (
-            <WeldingSparks />
-          )}
+        <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 px-6 overflow-hidden">
           <BlueprintBackground />
           {/* Background glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent/[0.06] rounded-full blur-[120px] pointer-events-none" />
