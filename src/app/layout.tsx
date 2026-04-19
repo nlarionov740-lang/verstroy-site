@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import CustomCursor from "@/components/CustomCursor";
 import MotionProvider from "@/components/MotionProvider";
 
 const siteUrl = "https://xn--b1agmtjagi.xn--p1ai";
@@ -210,7 +209,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <CustomCursor />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

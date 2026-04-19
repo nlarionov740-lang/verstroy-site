@@ -167,10 +167,3 @@ html {
     scroll-margin-top: 64px;
   }
 }
-
-/* Hide default cursor for custom dot */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
