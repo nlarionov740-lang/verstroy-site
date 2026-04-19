@@ -204,6 +204,12 @@ export default function RootLayout({
       lang="ru"
       className={`${montserrat.variable} antialiased`}
     >
+      <head>
+        <link
+          rel="preconnect"
+          href="https://pub-bb1561168dcd45c991b3b95d38e591d4.r2.dev"
+        />
+      </head>
       <body className="min-h-screen bg-bg-dark text-text-primary">
         <script
           type="application/ld+json"

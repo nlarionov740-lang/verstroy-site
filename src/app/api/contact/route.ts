@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 function escapeHtml(s: string): string {
   return s
@@ -11,6 +12,18 @@ function escapeHtml(s: string): string {
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request.headers);
+    const rl = checkRateLimit(ip);
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: "Слишком много запросов. Попробуйте позже." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(rl.retryAfter ?? 60) },
+        }
+      );
+    }
+
     const { name, phone } = await request.json();
 
     if (!name || !phone) {
@@ -20,8 +33,25 @@ export async function POST(request: Request) {
       );
     }
 
-    const safeName = escapeHtml(String(name));
-    const safePhone = escapeHtml(String(phone));
+    const nameTrimmed = String(name).trim();
+    if (nameTrimmed.length < 2 || nameTrimmed.length > 100) {
+      return NextResponse.json(
+        { error: "Имя должно быть от 2 до 100 символов" },
+        { status: 400 }
+      );
+    }
+
+    const phoneTrimmed = String(phone).trim();
+    const phoneDigits = phoneTrimmed.replace(/\D/g, "");
+    if (phoneDigits.length < 11 || phoneDigits.length > 12) {
+      return NextResponse.json(
+        { error: "Телефон должен содержать от 11 до 12 цифр" },
+        { status: 400 }
+      );
+    }
+
+    const safeName = escapeHtml(nameTrimmed);
+    const safePhone = escapeHtml(phoneTrimmed);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.mail.ru",

@@ -17,13 +17,13 @@ export const metadata: Metadata = {
     "ВЕР СТРОЙ вакансии",
   ],
   alternates: {
-    canonical: "/vakansii",
+    canonical: "https://xn--b1agmtjagi.xn--p1ai/vakansii",
   },
   openGraph: {
     title: "Вакансии — ВЕР СТРОЙ | Работа в строительстве Пермь",
     description:
       "Открытые вакансии строительной компании ВЕР СТРОЙ. Бетонщики, каменщики, отделочники, монтажники, сварщики. Официально, вахта, от 100 000 руб.",
-    url: "/vakansii",
+    url: "https://xn--b1agmtjagi.xn--p1ai/vakansii",
     type: "website",
   },
 };

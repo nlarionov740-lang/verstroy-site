@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -8,8 +7,7 @@ import Stats from "@/components/Stats";
 import Contacts from "@/components/Contacts";
 import Footer from "@/components/Footer";
 import SectionTransition from "@/components/SectionTransition";
-
-const Portfolio = dynamic(() => import("@/components/Portfolio"));
+import Portfolio from "@/components/PortfolioClient";
 
 export default function Home() {
   return (

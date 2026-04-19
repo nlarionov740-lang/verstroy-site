@@ -367,7 +367,7 @@ export default function Process() {
           {/* Vertical gold line */}
           <div className="absolute left-[5px] top-0 bottom-0 w-0.5 bg-white/10" />
 
-          {steps.map((step, i) => (
+          {steps.map((step) => (
             <motion.div
               key={step.num}
               initial={{ opacity: 0, y: 30 }}

@@ -551,7 +551,7 @@ export default function VakansiPage() {
                 ВЕР СТРОЙ — г. Пермь
               </span>
 
-              <h1 className="font-montserrat text-4xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
+              <h1 className="font-montserrat text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
                 Работа в строительной<br />
                 <span className="text-accent">компании</span>
               </h1>

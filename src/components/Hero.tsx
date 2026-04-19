@@ -45,6 +45,7 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover hidden sm:block"
           poster="/images/hero-bg.jpg"
         >
@@ -218,7 +219,7 @@ export default function Hero() {
         transition={{ delay: 1.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] uppercase tracking-[0.35em] text-white/20">
+        <span className="text-[10px] uppercase tracking-[0.35em] text-white/45">
           Листайте
         </span>
         <motion.div
@@ -228,7 +229,7 @@ export default function Hero() {
           onClick={() => handleScroll("#about")}
         >
           <svg
-            className="w-5 h-5 text-white/20"
+            className="w-5 h-5 text-white/45"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

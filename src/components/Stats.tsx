@@ -143,7 +143,7 @@ function GuaranteeCard({
 
       {/* Icon with parallax */}
       <div
-        className="relative z-20 w-16 h-16 lg:w-18 lg:h-18 rounded-xl flex items-center justify-center text-accent mb-8"
+        className="relative z-20 w-16 h-16 lg:w-20 lg:h-20 rounded-xl flex items-center justify-center text-accent mb-8"
         style={{
           background: isHovered ? "rgba(212,168,67,0.2)" : "rgba(212,168,67,0.1)",
           border: isHovered

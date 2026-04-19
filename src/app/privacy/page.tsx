@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Политика конфиденциальности",
   description:
     "Политика конфиденциальности ООО «ВЕР СТРОЙ». Обработка персональных данных в соответствии с ФЗ-152.",
+  alternates: {
+    canonical: "https://xn--b1agmtjagi.xn--p1ai/privacy",
+  },
 };
 
 export default function PrivacyPage() {

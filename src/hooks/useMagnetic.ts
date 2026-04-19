@@ -6,8 +6,8 @@ interface MagneticOptions {
   strength?: number;
 }
 
-export function useMagnetic({ strength = 0.3 }: MagneticOptions = {}) {
-  const ref = useRef<HTMLElement>(null);
+export function useMagnetic<T extends HTMLElement = HTMLElement>({ strength = 0.3 }: MagneticOptions = {}) {
+  const ref = useRef<T>(null);
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent) => {

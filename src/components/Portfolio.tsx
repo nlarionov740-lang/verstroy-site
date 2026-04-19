@@ -6,7 +6,6 @@ import AnimatedBackground from "./AnimatedBackground";
 import { useInView } from "react-intersection-observer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Keyboard, Zoom } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
@@ -125,14 +124,14 @@ function TickerMarquee({
 }
 
 function TiltCard({ children, onClick, className }: { children: React.ReactNode; onClick: () => void; className?: string }) {
-  const tilt = useTilt({ max: 6, scale: 1.03, speed: 500 });
+  const { ref, onMouseMove, onMouseLeave, style } = useTilt({ max: 6, scale: 1.03, speed: 500 });
   return (
     <div
-      ref={tilt.ref}
+      ref={ref}
       onClick={onClick}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-      style={tilt.style}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
       className={className}
     >
       {children}
@@ -143,7 +142,6 @@ function TiltCard({ children, onClick, className }: { children: React.ReactNode;
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
   const [activeFilter, setActiveFilter] = useState("Все работы");
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 });
 
@@ -177,7 +175,6 @@ export default function Portfolio() {
 
   const closeGallery = useCallback(() => {
     setSelectedProject(null);
-    setSwiperInstance(null);
     document.body.style.overflow = "";
   }, []);
 
@@ -225,7 +222,7 @@ export default function Portfolio() {
         />
 
         {/* Projects grid — FULLWIDTH */}
-        <div className="px-1 sm:px-2 2xl:px-8 3xl:px-12">
+        <div className="px-4 lg:px-6 2xl:px-8 3xl:px-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-2 sm:gap-3">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, i) => (
@@ -360,7 +357,6 @@ export default function Portfolio() {
                 keyboard={{ enabled: true }}
                 zoom={{ maxRatio: 3 }}
                 initialSlide={currentSlide}
-                onSwiper={setSwiperInstance}
                 onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
                 className="w-full h-full portfolio-swiper"
                 spaceBetween={0}

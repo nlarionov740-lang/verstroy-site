@@ -84,13 +84,13 @@ function FloatingInput({
 }
 
 function MagneticWrap({ children }: { children: React.ReactNode }) {
-  const mag = useMagnetic({ strength: 0.25 });
+  const { ref, onMouseMove, onMouseLeave, style } = useMagnetic<HTMLDivElement>({ strength: 0.25 });
   return (
     <div
-      ref={mag.ref as React.RefObject<HTMLDivElement>}
-      onMouseMove={mag.onMouseMove}
-      onMouseLeave={mag.onMouseLeave}
-      style={mag.style}
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={style}
       className="inline-block w-full"
     >
       {children}
@@ -331,7 +331,7 @@ export default function Contacts() {
                   Оставьте заявку
                 </h3>
                 <p className="text-text-secondary mb-10 leading-relaxed">
-                  Оставьте номер — перезвоним и обсудим детали
+                  Укажите номер — перезвоним и обсудим детали
                 </p>
 
                 {/* Form */}
