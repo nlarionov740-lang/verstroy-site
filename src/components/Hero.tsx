@@ -103,7 +103,7 @@ export default function Hero() {
             <TextReveal className="block text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase sm:whitespace-nowrap" delay={0.3}>Строим то, что</TextReveal>
             <span className="block">
               <TextReveal className="inline text-3xl leading-[1.08] text-white sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase" delay={0.5}>ПРОСТОИТ</TextReveal>
-              <span className="inline-block w-[0.25em]" />
+              <span className="inline-block w-[1em]" />
               <TextReveal className="inline text-3xl leading-[1.08] text-accent sm:text-4xl lg:text-[3.5rem] xl:text-[4.25rem] 2xl:text-[5rem] 3xl:text-[6rem] uppercase" delay={0.65}>ВЕКА</TextReveal>
             </span>
           </motion.h1>
