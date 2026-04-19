@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useMobileActive } from "@/hooks/useMobileActive";
 
 interface TiltState {
   rotateX: number;
@@ -164,6 +165,8 @@ function ServiceCard({
     borderAngle: 0,
   });
   const [isHovering, setIsHovering] = useState(false);
+  const mobileActive = useMobileActive(cardRef, { threshold: 0.6 });
+  const isActive = isHovered || mobileActive;
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -225,10 +228,10 @@ function ServiceCard({
           transition: isHovering
             ? "transform 0.15s ease-out"
             : "transform 0.5s ease-out",
-          borderColor: isHovered
+          borderColor: isActive
             ? "rgba(36,53,88,0.6)"
             : "rgba(255,255,255,0.06)",
-          boxShadow: isHovered
+          boxShadow: isActive
             ? "0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(27,42,74,0.3), 0 0 80px rgba(212,168,67,0.06)"
             : "none",
         }}
@@ -283,9 +286,9 @@ function ServiceCard({
           <div
             className="relative overflow-visible"
             style={{
-              color: isHovered ? "#E4BE6A" : "rgba(255,255,255,0.25)",
-              transform: isHovered ? "scale(1.5) rotate(8deg)" : "scale(1) rotate(0deg)",
-              filter: isHovered
+              color: isActive ? "#E4BE6A" : "rgba(255,255,255,0.25)",
+              transform: isActive ? "scale(1.5) rotate(8deg)" : "scale(1) rotate(0deg)",
+              filter: isActive
                 ? "drop-shadow(0 0 16px rgba(212,168,67,0.7)) drop-shadow(0 0 40px rgba(212,168,67,0.3))"
                 : "none",
               transition: "color 0.15s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1), filter 0.2s ease",
@@ -305,9 +308,9 @@ function ServiceCard({
           <span
             className="font-montserrat text-[40px] font-bold leading-none select-none inline-block"
             style={{
-              color: isHovered ? "rgba(228,190,106,0.6)" : "rgba(255,255,255,0.04)",
-              textShadow: isHovered ? "0 0 30px rgba(212,168,67,0.5)" : "none",
-              transform: isHovered ? "scale(1.15) translateY(-4px)" : "scale(1) translateY(0)",
+              color: isActive ? "rgba(228,190,106,0.6)" : "rgba(255,255,255,0.04)",
+              textShadow: isActive ? "0 0 30px rgba(212,168,67,0.5)" : "none",
+              transform: isActive ? "scale(1.15) translateY(-4px)" : "scale(1) translateY(0)",
               transition: "color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease",
             }}
           >
@@ -319,8 +322,8 @@ function ServiceCard({
         <div
           className="h-px bg-accent/50 my-5 origin-center relative z-10"
           style={{
-            transform: isHovered ? "scaleX(1)" : "scaleX(0)",
-            boxShadow: isHovered ? '0 0 10px rgba(212,168,67,0.4)' : 'none',
+            transform: isActive ? "scaleX(1)" : "scaleX(0)",
+            boxShadow: isActive ? '0 0 10px rgba(212,168,67,0.4)' : 'none',
             transition: "transform 400ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 400ms ease",
           }}
         />
@@ -330,9 +333,9 @@ function ServiceCard({
           <h3
             className="font-montserrat text-xl lg:text-2xl font-semibold"
             style={{
-              color: isHovered ? "#E4BE6A" : "#fff",
-              transform: isHovered ? "translateX(6px)" : "translateX(0)",
-              letterSpacing: isHovered ? '-0.02em' : '0em',
+              color: isActive ? "#E4BE6A" : "#fff",
+              transform: isActive ? "translateX(6px)" : "translateX(0)",
+              letterSpacing: isActive ? '-0.02em' : '0em',
               transition: "color 350ms ease, transform 400ms cubic-bezier(0.16,1,0.3,1), letter-spacing 300ms ease",
             }}
           >
@@ -362,8 +365,9 @@ function ServiceCard({
             <p
               className="text-sm text-white/50 mt-3"
               style={{
-                opacity: 1,
+                opacity: isActive ? 1 : 0.7,
                 transform: "translateY(0)",
+                transition: "opacity 400ms ease",
               }}
             >
               {service.description}

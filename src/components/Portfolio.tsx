@@ -12,6 +12,7 @@ import "swiper/css/zoom";
 import Image from "next/image";
 import { projects, getProjectPhotos, getCoverUrl, type Project } from "@/data/projects";
 import { useTilt } from "@/hooks/useTilt";
+import { useMobileActive } from "@/hooks/useMobileActive";
 
 /* ── Interactive ticker with drag + auto-scroll ── */
 function TickerMarquee({
@@ -139,6 +140,83 @@ function TiltCard({ children, onClick, className }: { children: React.ReactNode;
   );
 }
 
+function ProjectCard({
+  project,
+  index,
+  onOpen,
+}: {
+  project: Project;
+  index: number;
+  onOpen: () => void;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isActive = useMobileActive(cardRef, { threshold: 0.6 });
+
+  return (
+    <motion.div
+      ref={cardRef}
+      data-active={isActive}
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: 0.04 * index }}
+      className="aspect-[4/5] group/card"
+    >
+      <TiltCard
+        onClick={onOpen}
+        className="group relative cursor-pointer overflow-hidden w-full h-full"
+      >
+        {/* Cover photo */}
+        <Image
+          src={getCoverUrl(project.slug)}
+          alt={`${project.name} — ${project.type} в ${project.location}`}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
+        />
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+
+        {/* Hover / scroll-active: inset accent border */}
+        <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent/40 group-data-[active=true]/card:border-accent/40 transition-colors duration-300 pointer-events-none z-10" />
+
+        {/* Photo count badge */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-xs text-white/80 z-10">
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+          </svg>
+          {project.photoCount}
+        </div>
+
+        {/* Content — bottom */}
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col z-10">
+          <span className="text-accent text-[11px] font-semibold tracking-[0.15em] uppercase mb-1.5">
+            {project.type}
+          </span>
+          <h3 className="font-montserrat text-lg sm:text-xl 2xl:text-2xl font-semibold text-white leading-tight mb-0.5 group-hover:text-accent group-data-[active=true]/card:text-accent transition-colors duration-300">
+            {project.name}
+          </h3>
+          <span className="text-white/50 text-sm">
+            {project.location}
+          </span>
+
+          {/* "Смотреть" — slides up on hover / on scroll (mobile) */}
+          <div className="mt-3 flex items-center gap-2 text-accent text-sm font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-data-[active=true]/card:translate-y-0 group-data-[active=true]/card:opacity-100 transition-all duration-400">
+            <span>Смотреть проект</span>
+            <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+        </div>
+      </TiltCard>
+    </motion.div>
+  );
+}
+
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -226,66 +304,12 @@ export default function Portfolio() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-2 sm:gap-3">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, i) => (
-                <motion.div
+                <ProjectCard
                   key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: 0.04 * i }}
-                  className="aspect-[4/5]"
-                >
-                <TiltCard
-                  onClick={() => openGallery(project)}
-                  className="group relative cursor-pointer overflow-hidden w-full h-full"
-                >
-                  {/* Cover photo */}
-                  <Image
-                    src={getCoverUrl(project.slug)}
-                    alt={`${project.name} — ${project.type} в ${project.location}`}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
-                  />
-
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
-
-                  {/* Hover: inset accent border */}
-                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-accent/40 transition-colors duration-300 pointer-events-none z-10" />
-
-                  {/* Photo count badge */}
-                  <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-xs text-white/80 z-10">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-                    </svg>
-                    {project.photoCount}
-                  </div>
-
-                  {/* Content — bottom */}
-                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 flex flex-col z-10">
-                    <span className="text-accent text-[11px] font-semibold tracking-[0.15em] uppercase mb-1.5">
-                      {project.type}
-                    </span>
-                    <h3 className="font-montserrat text-lg sm:text-xl 2xl:text-2xl font-semibold text-white leading-tight mb-0.5 group-hover:text-accent transition-colors duration-300">
-                      {project.name}
-                    </h3>
-                    <span className="text-white/50 text-sm">
-                      {project.location}
-                    </span>
-
-                    {/* "Смотреть" — slides up on hover */}
-                    <div className="mt-3 flex items-center gap-2 text-accent text-sm font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
-                      <span>Смотреть проект</span>
-                      <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </TiltCard>
-                </motion.div>
+                  project={project}
+                  index={i}
+                  onOpen={() => openGallery(project)}
+                />
               ))}
             </AnimatePresence>
           </div>

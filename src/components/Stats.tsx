@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState, useRef, useCallback } from "react";
 import GradientMesh from "./GradientMesh";
+import { useMobileActive } from "@/hooks/useMobileActive";
 
 const guarantees = [
   {
@@ -64,6 +65,8 @@ function GuaranteeCard({
   const [isHovered, setIsHovered] = useState(false);
   const [mouse, setMouse] = useState<MouseState>({ x: 0, y: 0 });
   const [iconOffset, setIconOffset] = useState<MouseState>({ x: 0, y: 0 });
+  const mobileActive = useMobileActive(cardRef, { threshold: 0.5 });
+  const isActive = isHovered || mobileActive;
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -100,8 +103,17 @@ function GuaranteeCard({
     <motion.div
       ref={cardRef}
       initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.12, ease }}
+      animate={
+        inView
+          ? { opacity: 1, y: isActive ? -8 : 0 }
+          : {}
+      }
+      transition={{
+        opacity: { duration: 0.6, delay: index * 0.12, ease },
+        y: isActive
+          ? { type: "spring", stiffness: 400, damping: 25 }
+          : { duration: 0.6, delay: index * 0.12, ease },
+      }}
       whileHover={{ y: -10, transition: { type: "spring", stiffness: 400, damping: 25 } }}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -110,10 +122,10 @@ function GuaranteeCard({
       style={{
         background: "rgba(255,255,255,0.04)",
         backdropFilter: "blur(4px)",
-        border: isHovered
+        border: isActive
           ? "1px solid rgba(212,168,67,0.3)"
           : "1px solid rgba(255,255,255,0.08)",
-        boxShadow: isHovered
+        boxShadow: isActive
           ? "0 20px 50px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,67,0.15)"
           : "none",
         transition: "border 400ms ease, box-shadow 400ms ease",
@@ -145,15 +157,15 @@ function GuaranteeCard({
       <div
         className="relative z-20 w-16 h-16 lg:w-20 lg:h-20 rounded-xl flex items-center justify-center text-accent mb-8"
         style={{
-          background: isHovered ? "rgba(212,168,67,0.2)" : "rgba(212,168,67,0.1)",
-          border: isHovered
+          background: isActive ? "rgba(212,168,67,0.2)" : "rgba(212,168,67,0.1)",
+          border: isActive
             ? "1px solid rgba(212,168,67,0.4)"
             : "1px solid rgba(212,168,67,0.2)",
-          boxShadow: isHovered
+          boxShadow: isActive
             ? "0 0 20px rgba(212,168,67,0.2)"
             : "none",
-          transform: isHovered
-            ? `translate(${iconOffset.x}px, ${iconOffset.y}px) scale(1.1)`
+          transform: isActive
+            ? `translate(${isHovered ? iconOffset.x : 0}px, ${isHovered ? iconOffset.y : 0}px) scale(1.1)`
             : "translate(0px, 0px) scale(1)",
           transition: "background 400ms ease, border 400ms ease, box-shadow 400ms ease, transform 0.5s ease",
         }}
@@ -165,8 +177,8 @@ function GuaranteeCard({
       <div
         className="relative z-20 h-[2px] mb-6"
         style={{
-          width: isHovered ? "3rem" : "2rem",
-          background: isHovered ? "rgba(212,168,67,0.6)" : "rgba(212,168,67,0.3)",
+          width: isActive ? "3rem" : "2rem",
+          background: isActive ? "rgba(212,168,67,0.6)" : "rgba(212,168,67,0.3)",
           transition: "width 500ms ease, background 500ms ease",
         }}
       />
@@ -175,7 +187,7 @@ function GuaranteeCard({
       <h3
         className="relative z-20 font-montserrat text-xl lg:text-2xl font-semibold mb-4"
         style={{
-          color: isHovered ? "var(--accent)" : "#FFFFFF",
+          color: isActive ? "var(--accent)" : "#FFFFFF",
           transition: "color 300ms ease",
         }}
       >
@@ -192,7 +204,7 @@ function GuaranteeCard({
         className="absolute bottom-0 left-0 right-0 h-[2px] z-20"
         style={{
           background: "linear-gradient(to right, rgba(212,168,67,0.8), var(--accent), rgba(212,168,67,0.8))",
-          transform: isHovered ? "scaleX(1)" : "scaleX(0)",
+          transform: isActive ? "scaleX(1)" : "scaleX(0)",
           transformOrigin: "center",
           transition: "transform 400ms ease",
         }}

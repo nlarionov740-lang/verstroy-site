@@ -1,9 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useMagnetic } from "@/hooks/useMagnetic";
+import { useMobileActive } from "@/hooks/useMobileActive";
+
+const HOVER_QUERY = "(hover: hover)";
+const subscribeHover = (cb: () => void) => {
+  const mq = window.matchMedia(HOVER_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const getHoverSnapshot = () => window.matchMedia(HOVER_QUERY).matches;
+const getServerHoverSnapshot = () => false;
 
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
@@ -106,6 +116,15 @@ export default function Contacts() {
   const [nameValue, setNameValue] = useState("");
   const isOnline = useIsOnline();
 
+  const canHover = useSyncExternalStore(
+    subscribeHover,
+    getHoverSnapshot,
+    getServerHoverSnapshot
+  );
+
+  const contactsRef = useRef<HTMLDivElement>(null);
+  const contactsActive = useMobileActive(contactsRef, { threshold: 0.4 });
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "");
     setPhoneMasked(formatPhone(raw));
@@ -206,24 +225,26 @@ export default function Contacts() {
             Считаем смету за 1 рабочий день. Выезд на объект бесплатно.
           </p>
 
-          <div className="space-y-2">
+          <div className="space-y-2" ref={contactsRef} data-active={contactsActive}>
             {/* Phone */}
             <motion.a
               href="tel:+79504511611"
               initial={{ opacity: 0, x: -40 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2, ease }}
-              whileHover={{ scale: 1.02, x: 8 }}
-              className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
+              whileHover={canHover ? { scale: 1.02, x: 8 } : undefined}
+              whileTap={!canHover ? { scale: 0.98 } : undefined}
+              data-active={contactsActive}
+              className="group/item flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] data-[active=true]:bg-white/[0.04] transition-all duration-300"
             >
-              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
-                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover/item:bg-accent group-hover/item:text-primary-dark group-data-[active=true]/item:bg-accent group-data-[active=true]/item:text-primary-dark transition-all duration-300 group-hover/item:shadow-xl group-hover/item:shadow-accent/20 group-data-[active=true]/item:shadow-xl group-data-[active=true]/item:shadow-accent/20">
+                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover/item:opacity-100 group-data-[active=true]/item:opacity-100 scale-90 group-hover/item:scale-100 group-data-[active=true]/item:scale-100 transition-all duration-300" />
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                 </svg>
               </div>
               <div>
-                <span className="text-xl font-semibold text-white group-hover:text-accent transition-colors duration-300">
+                <span className="text-xl font-semibold text-white group-hover/item:text-accent group-data-[active=true]/item:text-accent transition-colors duration-300">
                   8 (950) 451-16-11
                 </span>
                 <p className="text-text-muted text-sm mt-0.5">Пн — Пт, 9:00 — 18:00</p>
@@ -236,17 +257,19 @@ export default function Contacts() {
               initial={{ opacity: 0, x: -40 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3, ease }}
-              whileHover={{ scale: 1.02, x: 8 }}
-              className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
+              whileHover={canHover ? { scale: 1.02, x: 8 } : undefined}
+              whileTap={!canHover ? { scale: 0.98 } : undefined}
+              data-active={contactsActive}
+              className="group/item flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] data-[active=true]:bg-white/[0.04] transition-all duration-300"
             >
-              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
-                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+              <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover/item:bg-accent group-hover/item:text-primary-dark group-data-[active=true]/item:bg-accent group-data-[active=true]/item:text-primary-dark transition-all duration-300 group-hover/item:shadow-xl group-hover/item:shadow-accent/20 group-data-[active=true]/item:shadow-xl group-data-[active=true]/item:shadow-accent/20">
+                <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover/item:opacity-100 group-data-[active=true]/item:opacity-100 scale-90 group-hover/item:scale-100 group-data-[active=true]/item:scale-100 transition-all duration-300" />
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
               <div>
-                <span className="text-lg sm:text-xl font-semibold text-white group-hover:text-accent transition-colors duration-300 break-all sm:break-normal">
+                <span className="text-lg sm:text-xl font-semibold text-white group-hover/item:text-accent group-data-[active=true]/item:text-accent transition-colors duration-300 break-all sm:break-normal">
                   ver.stroy.company@mail.ru
                 </span>
                 <p className="text-text-muted text-sm mt-0.5">Ответим в течение дня</p>
@@ -262,24 +285,26 @@ export default function Contacts() {
               <motion.button
                 type="button"
                 onClick={() => setShowMap(!showMap)}
-                whileHover={{ scale: 1.02, x: 8 }}
-                className="group flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] transition-all duration-300 w-full text-left"
+                whileHover={canHover ? { scale: 1.02, x: 8 } : undefined}
+                whileTap={!canHover ? { scale: 0.98 } : undefined}
+                data-active={contactsActive}
+                className="group/item flex items-center gap-5 p-5 -ml-4 rounded-xl hover:bg-white/[0.04] data-[active=true]:bg-white/[0.04] transition-all duration-300 w-full text-left"
               >
-                <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-300 group-hover:shadow-xl group-hover:shadow-accent/20">
-                  <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300" />
+                <div className="relative flex-shrink-0 w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover/item:bg-accent group-hover/item:text-primary-dark group-data-[active=true]/item:bg-accent group-data-[active=true]/item:text-primary-dark transition-all duration-300 group-hover/item:shadow-xl group-hover/item:shadow-accent/20 group-data-[active=true]/item:shadow-xl group-data-[active=true]/item:shadow-accent/20">
+                  <span className="absolute inset-[-4px] rounded-2xl border-2 border-accent opacity-0 group-hover/item:opacity-100 group-data-[active=true]/item:opacity-100 scale-90 group-hover/item:scale-100 group-data-[active=true]/item:scale-100 transition-all duration-300" />
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 0115 0z" />
                   </svg>
                 </div>
                 <div>
-                  <span className="text-xl font-semibold text-white group-hover:text-accent transition-colors duration-300">г. Пермь</span>
+                  <span className="text-xl font-semibold text-white group-hover/item:text-accent group-data-[active=true]/item:text-accent transition-colors duration-300">г. Пермь</span>
                   <p className="text-text-muted text-sm mt-0.5">ул. Монастырская, д. 12, офис 407</p>
                 </div>
                 <motion.svg
                   animate={{ rotate: showMap ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
-                  className="w-5 h-5 text-white/20 group-hover:text-accent ml-auto shrink-0"
+                  className="w-5 h-5 text-white/20 group-hover/item:text-accent group-data-[active=true]/item:text-accent ml-auto shrink-0"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
