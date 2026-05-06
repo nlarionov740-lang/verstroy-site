@@ -93,7 +93,7 @@ export default function Header() {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="group inline-flex items-center"
+              className="group inline-flex shrink-0 items-center"
               aria-label="ВЕР СТРОЙ — на главную"
             >
               <motion.span
@@ -106,10 +106,10 @@ export default function Header() {
             </a>
 
             {/* Desktop nav */}
-            <motion.nav
-              className="hidden md:flex items-center"
-              animate={{ gap: scrolled ? 24 : 32 }}
-              transition={{ duration: 0.4, ease: EASE }}
+            <nav
+              className={`hidden xl:flex items-center transition-[gap] duration-[400ms] ease-out ${
+                scrolled ? "gap-6" : "gap-8"
+              }`}
             >
               {navLinks.map((link) => {
                 const isActive = activeSection === link.id;
@@ -121,7 +121,7 @@ export default function Header() {
                       e.preventDefault();
                       handleNavClick(link.href);
                     }}
-                    className={`relative text-xs uppercase tracking-[0.15em] font-medium transition-colors duration-300 group ${
+                    className={`relative whitespace-nowrap text-xs uppercase tracking-[0.15em] font-medium transition-colors duration-300 group ${
                       isActive ? "text-accent" : "text-white/70 hover:text-white"
                     }`}
                   >
@@ -136,7 +136,7 @@ export default function Header() {
               {/* Vacancies */}
               <Link
                 href="/vakansii"
-                className="relative text-xs uppercase tracking-[0.15em] font-medium text-white/70 hover:text-white transition-colors duration-300 group"
+                className="relative whitespace-nowrap text-xs uppercase tracking-[0.15em] font-medium text-white/70 hover:text-white transition-colors duration-300 group"
               >
                 Вакансии
                 <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] bg-gradient-to-r from-transparent via-accent to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-[400ms] origin-center" />
@@ -152,12 +152,12 @@ export default function Header() {
               >
                 8 (950) 451-16-11
               </a>
-            </motion.nav>
+            </nav>
 
             {/* Burger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden relative z-50 w-11 h-11 flex flex-col items-center justify-center gap-1.5"
+              className="xl:hidden relative z-50 w-11 h-11 flex flex-col items-center justify-center gap-1.5"
               aria-label="Меню"
               aria-expanded={mobileOpen}
               aria-controls="mobile-navigation"
@@ -193,7 +193,7 @@ export default function Header() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-primary-dark/95 backdrop-blur-xl md:hidden overflow-hidden"
+            className="fixed inset-0 z-40 bg-primary-dark/95 backdrop-blur-xl xl:hidden overflow-hidden"
           >
             {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-white/[0.02] select-none pointer-events-none">
