@@ -4,6 +4,7 @@ import Comparison from "./components/Comparison";
 import InteractiveBlueprint from "./components/InteractiveBlueprint";
 import StatsBar from "./components/StatsBar";
 import Principles from "./components/Principles";
+import ProcessTimeline from "./components/ProcessTimeline";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -27,6 +28,7 @@ export default function CottagePage() {
       <InteractiveBlueprint />
       <StatsBar />
       <Principles />
+      <ProcessTimeline />
     </main>
   );
 }
