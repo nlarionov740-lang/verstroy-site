@@ -74,7 +74,7 @@ export default function InteractiveBlueprint() {
           <span className="bg-[#ffd400] px-2 inline-block">опыт большого объекта.</span>
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 mt-12">
+        <div className="hidden lg:grid lg:grid-cols-[2fr_1fr] gap-8 mt-12">
           {/* SVG-чертёж */}
           <div
             className="relative aspect-[4/3] bg-white border border-black/10"
@@ -221,7 +221,7 @@ function BlueprintHouseSVG({
             }}
             role="button"
             aria-label={n.title}
-            className="cursor-pointer focus:outline-none"
+            className="cursor-pointer focus:outline-none focus-visible:[outline:2px_solid_#ffd400] focus-visible:[outline-offset:4px]"
           >
             <circle
               cx={cx}
