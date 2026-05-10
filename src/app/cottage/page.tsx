@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import BlueprintGrid from "./components/BlueprintGrid";
+import SectionTag from "./components/SectionTag";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -17,8 +19,12 @@ export const metadata: Metadata = {
 export default function CottagePage() {
   return (
     <main className="min-h-screen bg-[#fafaf7] text-[#0a0a0a]">
-      <section className="container mx-auto px-5 py-20">
-        <h1 className="text-4xl font-bold">Cottage landing — placeholder</h1>
+      <section className="relative container mx-auto px-5 py-20">
+        <BlueprintGrid />
+        <div className="relative">
+          <SectionTag number="01 / 11" label="COTTAGE 200+ M²" />
+          <h1 className="text-4xl font-bold mt-4">Cottage landing — placeholder</h1>
+        </div>
       </section>
     </main>
   );
