@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "./components/Hero";
 import Comparison from "./components/Comparison";
+import InteractiveBlueprint from "./components/InteractiveBlueprint";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -21,6 +22,7 @@ export default function CottagePage() {
     <main className="min-h-screen bg-[#fafaf7] text-[#0a0a0a]">
       <Hero />
       <Comparison />
+      <InteractiveBlueprint />
     </main>
   );
 }
