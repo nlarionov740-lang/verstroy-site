@@ -7,6 +7,7 @@ import Principles from "./components/Principles";
 import ProcessTimeline from "./components/ProcessTimeline";
 import PortfolioGrid from "./components/PortfolioGrid";
 import Calculator from "./components/Calculator";
+import Team from "./components/Team";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -33,6 +34,7 @@ export default function CottagePage() {
       <ProcessTimeline />
       <PortfolioGrid />
       <Calculator />
+      <Team />
     </main>
   );
 }
