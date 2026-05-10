@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "./components/Hero";
+import Comparison from "./components/Comparison";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -19,6 +20,7 @@ export default function CottagePage() {
   return (
     <main className="min-h-screen bg-[#fafaf7] text-[#0a0a0a]">
       <Hero />
+      <Comparison />
     </main>
   );
 }
