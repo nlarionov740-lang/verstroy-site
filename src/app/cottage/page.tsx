@@ -9,6 +9,7 @@ import PortfolioGrid from "./components/PortfolioGrid";
 import Calculator from "./components/Calculator";
 import Team from "./components/Team";
 import FAQ from "./components/FAQ";
+import CtaForm from "./components/CtaForm";
 
 export const metadata: Metadata = {
   title: "Строительство коттеджей под ключ от 200 м² — ВЕР СТРОЙ, Пермь",
@@ -37,6 +38,7 @@ export default function CottagePage() {
       <Calculator />
       <Team />
       <FAQ />
+      <CtaForm />
     </main>
   );
 }
