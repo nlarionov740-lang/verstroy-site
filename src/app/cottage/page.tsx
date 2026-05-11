@@ -59,6 +59,13 @@ const JSON_LD = {
         { "@type": "City", name: "Тюмень" },
       ],
       url: `${SITE_URL}/cottage`,
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "RUB",
+        lowPrice: 9000000,
+        highPrice: 30000000,
+        offerCount: 3,
+      },
     },
     {
       "@type": "FAQPage",
