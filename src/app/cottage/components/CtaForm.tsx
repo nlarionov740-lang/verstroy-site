@@ -128,6 +128,13 @@ export default function CtaForm() {
             />
           </aside>
         </div>
+
+        <div className="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between text-[10px] font-mono tracking-widest text-white/40 uppercase">
+          <span>© {new Date().getFullYear()} ООО «ВЕР СТРОЙ»</span>
+          <a href="/privacy" className="hover:text-white/70 transition">
+            Политика конфиденциальности
+          </a>
+        </div>
       </div>
     </section>
   );
