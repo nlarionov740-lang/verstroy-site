@@ -76,6 +76,19 @@ const JSON_LD = {
         acceptedAnswer: { "@type": "Answer", text: item.a },
       })),
     },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${SITE_URL}/cottage#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Главная", item: SITE_URL },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Коттеджи",
+          item: `${SITE_URL}/cottage`,
+        },
+      ],
+    },
   ],
 };
 
