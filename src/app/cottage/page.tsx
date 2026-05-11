@@ -10,6 +10,7 @@ import Calculator from "./components/Calculator";
 import Team from "./components/Team";
 import FAQ from "./components/FAQ";
 import CtaForm from "./components/CtaForm";
+import { FAQ_ITEMS } from "./data/faq";
 
 const SITE_URL = "https://xn--b1agmtjagi.xn--p1ai";
 
@@ -58,6 +59,15 @@ const JSON_LD = {
         { "@type": "City", name: "Тюмень" },
       ],
       url: `${SITE_URL}/cottage`,
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE_URL}/cottage#faq`,
+      mainEntity: FAQ_ITEMS.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
     },
   ],
 };
