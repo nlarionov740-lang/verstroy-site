@@ -12,7 +12,15 @@ const STATS = [
 export default function StatsBar() {
   return (
     <section className="bg-[#0a0a0a] text-[#fafaf7] py-20 px-6 lg:px-16">
-      <div className="max-w-[1440px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="font-mono text-[10px] tracking-[0.25em] uppercase opacity-60 flex gap-3 mb-10">
+          <span>VER STROY</span>
+          <span>·</span>
+          <span>04 / 11</span>
+          <span>·</span>
+          <span>ЦИФРЫ</span>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         {STATS.map((s) => (
           <div key={s.label} className="border-l-2 border-[#ffd400] pl-5">
             <div
@@ -27,6 +35,7 @@ export default function StatsBar() {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </section>
   );
