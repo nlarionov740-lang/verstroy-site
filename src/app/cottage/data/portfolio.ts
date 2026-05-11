@@ -73,6 +73,8 @@ function mapProject(p: Project): PortfolioItem {
 }
 
 // ТЦ Вера — текущий объект, его нет в projects.ts, но он важен для лендинга.
+// Обложка берётся из той же R2-схемы через getCoverUrl: /covers/tc-vera.jpg
+// в бакете. Когда фото будет загружено, картинка появится автоматически.
 const TC_VERA: PortfolioItem = {
   slug: "tc-vera",
   title: "ТЦ «Вера»",
@@ -81,7 +83,7 @@ const TC_VERA: PortfolioItem = {
   year: "2024",
   area: "—",
   type: "Монолит, кладка",
-  cover: "/covers/tc-vera.jpg",
+  cover: getCoverUrl("tc-vera"),
 };
 
 export const PORTFOLIO: PortfolioItem[] = [TC_VERA, ...projects.map(mapProject)];
