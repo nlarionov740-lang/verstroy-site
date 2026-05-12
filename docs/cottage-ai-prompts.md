@@ -1,6 +1,7 @@
 # AI-фото для лендинга /cottage
 
-5 промптов для Nano Banana Pro (Google Gemini Image) или GPT Image 2 (OpenAI).
+10 промптов для Nano Banana Pro (Google Gemini Image) или GPT Image 2 (OpenAI):
+5 «классических» (hero, comparison, facade, cta-bg, og) + 5 «морф-слоёв» (см. §6–§10).
 Все фото — в едином стиле: тёплая цветовая температура (4500–5500K), плёночное зерно,
 архитектурная фотография в стиле Architectural Digest.
 
@@ -47,6 +48,94 @@
 **Назначение:** Open Graph для соцсетей и поиска.
 **Файл:** `public/cottage/og.jpg` (jpg для совместимости с парсерами)
 
+## Морф-слои Hero (Hero «Чертёж морфит в фото»)
+
+Hero-секция /cottage реализована как scroll-driven морф: чертёж SVG → бетон → дерево →
+окна+свет → атмосфера → финальное фото. Слой 1 — это SVG-чертёж (рисуется в коде,
+не фото). Слои 2–6 ждут AI-фото; пока используются градиентные плейсхолдеры.
+
+Общие требования к слоям морфа:
+
+- Соотношение сторон: 16:9 (1920×1080), один масштаб для всей цепочки.
+- Композиция и точка взгляда **должны совпадать** во всех 5 фото: одна и та же
+  «виртуальная камера» смотрит на коттедж — иначе морф будет рваный.
+- Палитра: тёплые серые, охра, угольный. Без фиолетового, без неона.
+- Без людей, без логотипов, без надписей.
+
+### 6. Морф · слой «Бетон close-up» (16:9, 1920×1080)
+
+> Extreme close-up of poured monolithic concrete wall surface, dark charcoal grey
+> (#3a3a38) gradient to near-black (#1a1a18), visible aggregate texture, faint
+> formwork tie-rod marks, soft directional light from upper-left, slight 35mm
+> film grain, no people, no logos, restrained matte finish, photographic
+> realism, industrial precision aesthetic.
+
+**Назначение:** слой 2 hero-морфа (scroll-progress 0.15–0.35).
+**Файл:** `public/cottage/morph-concrete.webp`
+
+### 7. Морф · слой «Дерево / фасадные ламели» (16:9, 1920×1080)
+
+> Architectural close-up of vertical thermo-pine facade slats (rhombus cladding),
+> warm oak-honey tones (#8b5e3c → #4a2f1c gradient diagonal), late-afternoon
+> side light revealing wood grain and shadow gaps between slats, slight overcast
+> diffusion, no people, no logos, no glossy varnish, matte oil finish, 35mm grain.
+> Frame composition identical to layer 6 (Hero final) — same camera angle.
+
+**Назначение:** слой 3 hero-морфа (scroll-progress 0.35–0.55).
+**Файл:** `public/cottage/morph-wood.webp`
+
+### 8. Морф · слой «Окна и свет» (16:9, 1920×1080)
+
+> Two-story modern cottage at dusk, large floor-to-ceiling windows glowing warm
+> golden from inside (color temperature 2700K, RGB approx 255-212-90), warm
+> interior light spilling onto wood facade and concrete, sky just-after-sunset
+> deep teal, no direct sun, contrast between cold exterior and warm interior,
+> architectural photography, 35mm, slight grain, no people visible inside
+> (or barely a silhouette), no logos. Same camera framing as Hero final shot.
+
+**Назначение:** слой 4 hero-морфа (scroll-progress 0.55–0.75).
+**Файл:** `public/cottage/morph-windows.webp`
+
+### 9. Морф · слой «Атмосфера / туман» (16:9, 1920×1080)
+
+> Same cottage exterior shrouded in low evening fog drifting across pine forest
+> background, warm-to-cool gradient (foreground warm ochre, background cool
+> charcoal), thick 35mm film grain, cinematic atmosphere reminiscent of
+> Tarkovsky / Roger Deakins, no people, no logos, restrained mood, slightly
+> desaturated. Same camera framing as previous layers.
+
+**Назначение:** слой 5 hero-морфа (scroll-progress 0.60–0.85).
+**Файл:** `public/cottage/morph-atmosphere.webp`
+
+### 10. Морф · слой «Финал» (16:9, 1920×1080)
+
+> Premium two-story modern cottage 280 m², monolithic concrete structure with
+> warm thermo-pine cladding accents and floor-to-ceiling windows glowing warm
+> at golden hour, Ural pine forest background with slight evening mist, low
+> wide-angle architectural shot in the style of Iwan Baan / AD magazine,
+> restrained palette (warm greys, charcoal, oak), 35mm grain, photorealistic,
+> no people, no logos. **This is the canonical Hero shot — all morph layers
+> 6–9 must share the same framing, lens, and horizon line as this image.**
+
+**Назначение:** слой 6 hero-морфа (финал, scroll-progress 0.75–1.00) — он же
+основной hero. Дублирует §1 по содержанию, но снимать нужно ОДИН раз и
+переиспользовать в обоих местах.
+**Файл:** `public/cottage/hero.webp` (можно симлинк `morph-final.webp` → `hero.webp`).
+
+### Workflow для морф-слоёв
+
+1. Сгенерируй §10 (финал) первым — это «якорь» композиции.
+2. В Nano Banana Pro используй фичу **«img-to-img / edit»**: подаёшь финальный
+   кадр + инструкцию «сохрани композицию, замени материалы на бетон close-up» —
+   так все 5 слоёв получаются геометрически совместимы.
+3. Если img-to-img недоступен — явно прописывай в промпте каждого слоя «same
+   camera angle as reference image attached».
+4. Все 5 фото складывай в `public/cottage/morph-*.webp` (одно разрешение, один
+   webp-quality, чтобы морф визуально работал без скачков).
+5. После генерации в `src/app/cottage/components/Hero.tsx` замени градиенты-
+   плейсхолдеры в слоях на `<Image fill priority={false} src="..." />`
+   (см. TODO-комментарии в коде).
+
 ## Workflow
 
 1. Скопируй промпт в Nano Banana Pro или GPT Image 2.
@@ -60,8 +149,12 @@
 ## Что заменить в коде после генерации
 
 | Файл | Что заменить |
-|---|---|
-| `src/app/cottage/components/Hero.tsx` | `[ AI HERO PHOTO 16:9 ]` placeholder → `<Image src="/cottage/hero.webp" ... />` |
+| --- | --- |
+| `src/app/cottage/components/Hero.tsx` (слой 2) | градиент бетона → `<Image fill src="/cottage/morph-concrete.webp" />` |
+| `src/app/cottage/components/Hero.tsx` (слой 3) | градиент дерева → `<Image fill src="/cottage/morph-wood.webp" />` |
+| `src/app/cottage/components/Hero.tsx` (слой 4) | плашки «окон» → `<Image fill src="/cottage/morph-windows.webp" />` |
+| `src/app/cottage/components/Hero.tsx` (слой 5) | градиент атмосферы → `<Image fill src="/cottage/morph-atmosphere.webp" />` |
+| `src/app/cottage/components/Hero.tsx` (слой 6) | `[ AI HERO PHOTO — final ]` placeholder → `<Image src="/cottage/hero.webp" fill priority />` |
 | `src/app/cottage/components/Comparison.tsx` | `[ AI: КОТТЕДЖ · ОПАЛУБКА ]` → `<Image src="/cottage/comparison-cottage.webp" />` + реальное фото колонн ТЦ для левой карточки |
 | `src/app/cottage/components/CtaForm.tsx` | Можно добавить фон через CSS `background-image: url(/cottage/cta-bg.webp)` поверх blueprint-grid |
 | `src/app/cottage/page.tsx` (metadata) | OG image уже ссылается на `/cottage/og.jpg` |
