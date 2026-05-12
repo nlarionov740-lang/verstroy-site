@@ -43,3 +43,6 @@ next-env.d.ts
 # photos — stored in Cloudflare R2, not in git
 /public/images/projects/
 /public/images/covers/
+
+# Superpowers brainstorm session files
+.superpowers/
